@@ -1,6 +1,6 @@
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
 
 const authors = [
   {
@@ -15,30 +15,34 @@ const authors = [
     job: "Artist",
     city: "Stockholm",
   },
-]
+];
 
 const AuthorsSection = () => {
   return (
-    <div className="container mx-auto">
+    <div className="px-6 md:px-48">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="py-10 text-8xl font-bold uppercase">Authors</h1>
+        <h1 className="py-10 text-4xl font-bold uppercase md:text-8xl">
+          Authors
+        </h1>
         <div className="flex items-center gap-2">
-          <h3 className="text-base font-bold uppercase">All Authors</h3>
+          <h3 className="hidden text-base font-bold uppercase md:block">
+            All Authors
+          </h3>
           <ArrowRight className="size-5" />
         </div>
       </div>
 
       {/* Grid authors */}
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         {authors.map((author, idx) => (
           <Card
             key={idx}
-            className="flex w-full items-center gap-10 border border-black p-7 rounded-none shadow-none"
+            className="flex w-full items-center gap-10 rounded-none border border-black p-5 shadow-none md:p-7"
           >
-            <CardContent className="flex items-center gap-10 p-0">
+            <CardContent className="flex flex-col items-start gap-6 p-0 md:flex-row md:items-center md:gap-10">
               {/* Avatar */}
-              <div className="relative size-[150px] overflow-hidden rounded-full">
+              <div className="relative size-32 overflow-hidden rounded-full md:size-[150px]">
                 <Image
                   src={author.img}
                   alt={author.name}
@@ -50,7 +54,7 @@ const AuthorsSection = () => {
               {/* Info */}
               <div className="flex flex-col gap-5">
                 <p className="text-3xl font-bold">{author.name}</p>
-                <div className="flex items-center gap-5 text-sm">
+                <div className="flex flex-col items-start gap-3 text-sm md:flex-row md:items-center md:gap-5">
                   <div className="flex items-center gap-1">
                     <span className="font-bold">Job</span>
                     <span>{author.job}</span>
@@ -66,7 +70,7 @@ const AuthorsSection = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AuthorsSection
+export default AuthorsSection;

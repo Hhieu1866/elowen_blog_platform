@@ -1,6 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 // data podcasts
@@ -30,24 +36,26 @@ const podcasts = [
 
 const PodcastSection = () => {
   return (
-    <div className="container mx-auto">
+    <div className="px-6 md:px-48">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="py-10 text-4xl font-bold uppercase md:text-6xl lg:text-8xl">
           Podcasts
         </h1>
         <Button variant="link" className="flex h-auto items-center gap-2 p-0">
-          <span className="text-base font-bold uppercase">All Episodes</span>
+          <span className="hidden text-base font-bold uppercase md:block">
+            All Episodes
+          </span>
           <ArrowRight className="size-5" />
         </Button>
       </div>
 
       {/* Grid podcasts */}
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3">
         {podcasts.map((pod, idx) => (
           <Card
             key={idx}
-            className="flex w-full flex-col gap-8 rounded-none border border-black p-11 shadow-none"
+            className="flex w-full flex-col gap-8 rounded-none border border-black p-6 shadow-none md:p-11"
           >
             {/* Image */}
             <div className="overflow-hidden">
@@ -66,7 +74,7 @@ const PodcastSection = () => {
             </CardHeader>
 
             {/* Meta */}
-            <CardFooter className="flex items-center gap-7 p-0 text-sm">
+            <CardFooter className="flex flex-col items-start gap-3 p-0 text-sm md:flex-row md:items-center md:gap-7">
               <div className="space-x-2">
                 <span className="font-bold">Date</span>
                 <span>{pod.date}</span>

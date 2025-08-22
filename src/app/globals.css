@@ -14,10 +14,27 @@
 .animate-marquee {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee 20s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
+/* swipe-fill effect */
+/* Chỉ chứa hiệu ứng sweep */
+.btn-sweep-effect {
+  @apply relative overflow-hidden transition-all duration-500 ease-in-out;
+}
 
+.btn-sweep-effect::before {
+  content: "";
+  @apply absolute inset-0 z-0 h-full w-0 transition-all duration-500;
+}
+
+.btn-sweep-effect:hover::before {
+  @apply w-full;
+}
+
+.btn-sweep-effect > * {
+  @apply relative z-10;
+}
 
 @layer base {
   :root {
@@ -74,8 +91,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
