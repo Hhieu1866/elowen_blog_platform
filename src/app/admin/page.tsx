@@ -1,30 +1,18 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import api from "@/lib/api";
+import { isAuthenticated, useAuth } from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-interface Tag {
-  id: string;
-  name: string;
-  createdAt: string;
-}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Loading from "@/components/Loading";
+import TagsSection from "./TagsSection";
+import CategoriesSection from "./CategoriesSection";
 
 const AdminDashboard = () => {
-  const { isAuthenticated, isAdmin } = useAuth();
   const router = useRouter();
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [newTagName, setNewTagName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCreatingTag, setIsCreatingTag] = useState(false);
+  const { isAuthenticated, isAdmin } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated.value) {
@@ -38,155 +26,54 @@ const AdminDashboard = () => {
       return;
     }
 
-    fetchTags();
+    setIsLoading(false);
   }, [isAuthenticated.value, isAdmin, router]);
 
-  const fetchTags = async () => {
-    try {
-      const response = await api.get("/tags");
-      setTags(response.data.tags);
-    } catch (error) {
-      console.error("Error fetching tags:", error);
-      toast.error("Failed to fetch tags");
-    }
-  };
-
-  const handleCreateTag = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTagName.trim()) {
-      toast.error("Tag name is required");
-      return;
-    }
-
-    setIsCreatingTag(true);
-    try {
-      await api.post("/tags", { name: newTagName.trim() });
-      toast.success("Tag created successfully");
-      setNewTagName("");
-      fetchTags();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to create tag");
-    } finally {
-      setIsCreatingTag(false);
-    }
-  };
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-gray-50">
+        <div className="flex items-center justify-center">
+          <Loading />
+        </div>
+        <p className="text-lg text-gray-600">Loading admin dashboard...</p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated.value || !isAdmin()) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       <div className="mx-auto max-w-7xl">
+        {/* header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage your blog platform</p>
+          <h1 className="text-3xl font-bold text-gray-900">Admin dashboard</h1>
+          <p className="text-lg text-gray-600">Manage your blog platform</p>
         </div>
 
+        {/* tabs navigation */}
         <Tabs defaultValue="tags" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="tags">Tags</TabsTrigger>
             <TabsTrigger value="posts">Posts</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="tags" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Tag</CardTitle>
-                <CardDescription>
-                  Add a new tag that can be used for categorizing posts
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleCreateTag} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="tagName">Tag Name</Label>
-                    <Input
-                      id="tagName"
-                      value={newTagName}
-                      onChange={(e) => setNewTagName(e.target.value)}
-                      placeholder="Enter tag name"
-                      disabled={isCreatingTag}
-                    />
-                  </div>
-                  <Button type="submit" disabled={isCreatingTag}>
-                    {isCreatingTag ? "Creating..." : "Create Tag"}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>All Tags</CardTitle>
-                <CardDescription>
-                  Manage existing tags in your blog platform
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <div className="text-center py-4">Loading tags...</div>
-                ) : tags.length === 0 ? (
-                  <div className="text-center py-4 text-gray-500">
-                    No tags found. Create your first tag above.
-                  </div>
-                ) : (
-                  <div className="grid gap-4">
-                    {tags.map((tag) => (
-                      <div
-                        key={tag.id}
-                        className="flex items-center justify-between p-4 border rounded-lg"
-                      >
-                        <div>
-                          <h3 className="font-medium">{tag.name}</h3>
-                          <p className="text-sm text-gray-500">
-                            Created: {new Date(tag.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          Edit
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+          {/* Categories Tab Content */}
+          <TabsContent value="categories">
+            <CategoriesSection />
           </TabsContent>
 
-          <TabsContent value="posts" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Post Management</CardTitle>
-                <CardDescription>
-                  Manage and moderate blog posts
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-gray-500">
-                  Post management features coming soon...
-                </div>
-              </CardContent>
-            </Card>
+          {/* tags tab content */}
+          <TabsContent value="tags">
+            <TagsSection />
           </TabsContent>
 
-          <TabsContent value="users" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>User Management</CardTitle>
-                <CardDescription>
-                  Manage user accounts and permissions
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-gray-500">
-                  User management features coming soon...
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {/* posts tab content */}
+          <TabsContent value="posts"></TabsContent>
         </Tabs>
       </div>
     </div>

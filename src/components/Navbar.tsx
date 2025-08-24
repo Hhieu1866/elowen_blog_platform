@@ -132,23 +132,38 @@ const Navbar = () => {
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-4 text-lg">
-                <a href="#">Magazine</a>
-                <a href="#">Podcast</a>
-                <a href="#">Authors</a>
-                <div className="flex gap-4 pt-4">
-                  <Instagram className="size-5" />
-                  <Twitter className="size-5" />
-                  <Youtube className="size-5" />
-                  <Rss className="size-5" />
-                </div>
                 {isAuthenticated.value ? (
-                  <Avatar>
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>HH</AvatarFallback>
-                  </Avatar>
+                  <div className="flex items-center gap-3">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Avatar>
+                          <AvatarImage
+                            src="https://github.com/shadcn.png"
+                            alt="@shadcn"
+                          />
+                          <AvatarFallback>HH</AvatarFallback>
+                        </Avatar>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="mt-2 shadow-xl">
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {isAdmin() && (
+                          <DropdownMenuItem
+                            onClick={() => router.push("/admin")}
+                          >
+                            Admin Dashboard
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem asChild>
+                          <Link href="/profile">Profile</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>
+                          Log out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <p className="text-xl font-semibold">Hi, Your name</p>
+                  </div>
                 ) : (
                   <div className="flex gap-4">
                     <Link href="/login" className="uppercase">
@@ -159,6 +174,17 @@ const Navbar = () => {
                     </Link>
                   </div>
                 )}
+
+                <a href="#">Magazine</a>
+                <a href="#">Podcast</a>
+                <a href="#">Authors</a>
+
+                <div className="flex gap-4 pt-4">
+                  <Instagram className="size-5" />
+                  <Twitter className="size-5" />
+                  <Youtube className="size-5" />
+                  <Rss className="size-5" />
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

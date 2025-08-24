@@ -41,7 +41,7 @@ const ProfilePage = () => {
           onValueChange={(value) => setActiveTab(value as ProfileTab)}
           className="space-y-6"
         >
-          <TabsList orientation="vertical">
+          <TabsList>
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="posts">Your Posts</TabsTrigger>
             <TabsTrigger value="#">Setting</TabsTrigger>

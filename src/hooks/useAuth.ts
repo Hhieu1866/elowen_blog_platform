@@ -1,6 +1,7 @@
 "use client";
 
 import { signal } from "@preact/signals-react";
+import { useEffect } from "react";
 
 export type AuthUser = {
   readonly id: string;
@@ -33,6 +34,23 @@ if (typeof window !== "undefined") {
 
 export const useAuth = () => {
   // Optional: Sync with localStorage changes across tabs
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "token") {
+        token.value = e.newValue;
+        isAuthenticated.value = !!e.newValue;
+      }
+
+      if (e.key === "user") {
+        user.value = e.newValue ? JSON.parse(e.newValue) : null;
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const login = (userData: AuthUser, accessToken: string) => {
     user.value = userData;
     token.value = accessToken;
