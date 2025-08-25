@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import React, { useState } from "react";
-import UserPostsManager from "./UserPostsManager";
+import UserPostsManager from "./post/UserPostsManager";
 
 export type ProfileTab = "profile" | "posts";
 

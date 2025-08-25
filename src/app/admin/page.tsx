@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { isAuthenticated, useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Loading from "@/components/Loading";
 import TagsSection from "./TagsSection";
 import CategoriesSection from "./CategoriesSection";
+import { Loader2 } from "lucide-react";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-gray-50">
         <div className="flex items-center justify-center">
-          <Loading />
+          <Loader2 className="h-4 w-4 animate-spin" />
         </div>
         <p className="text-lg text-gray-600">Loading admin dashboard...</p>
       </div>

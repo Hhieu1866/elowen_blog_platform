@@ -17,7 +17,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -87,7 +86,7 @@ const UserPostsManager = () => {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await api.delete(`/post/${postId}`);
+      await api.delete(`/posts/${postId}`);
       toast.success("Post delete successfully");
       fetchUserPosts(currentPage);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -159,7 +158,7 @@ const UserPostsManager = () => {
           </p>
         </div>
         <Button asChild>
-          <Link href="/create-post">
+          <Link href="/profile/post/create">
             <Plus />
             Create new post
           </Link>
