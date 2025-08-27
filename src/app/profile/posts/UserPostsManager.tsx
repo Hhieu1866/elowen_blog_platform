@@ -286,23 +286,36 @@ export default function UserPostsManager() {
 
       {/* list */}
       {postsLoading.value ? (
-        <div>
-          {Array.from({ length: postsPerPage }).map((_, index) => (
-            <Card key={index} className="overflow-hidden">
-              <CardHeader className="p-4">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="mt-2 h-4 w-1/2" />
-              </CardHeader>
-              <CardContent className="p-4">
-                <Skeleton className="h-20 w-full" />
-              </CardContent>
-              <CardFooter className="flex justify-between p-4">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-8 w-8 rounded-full" />
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        // <div>
+        //   {Array.from({ length: postsPerPage }).map((_, index) => (
+        //     <Card key={index} className="overflow-hidden">
+        //       <CardHeader className="p-4">
+        //         <Skeleton className="h-6 w-3/4" />
+        //         <Skeleton className="mt-2 h-4 w-1/2" />
+        //       </CardHeader>
+        //       <CardContent className="p-4">
+        //         <Skeleton className="h-20 w-full" />
+        //       </CardContent>
+        //       <CardFooter className="flex justify-between p-4">
+        //         <Skeleton className="h-4 w-20" />
+        //         <Skeleton className="h-8 w-8 rounded-full" />
+        //       </CardFooter>
+        //     </Card>
+        //   ))}
+        // </div>
+        <Card className="overflow-hidden">
+          <CardHeader className="p-4">
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="mt-2 h-4 w-1/2" />
+          </CardHeader>
+          <CardContent className="p-4">
+            <Skeleton className="h-20 w-full" />
+          </CardContent>
+          <CardFooter className="flex justify-between p-4">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-8 w-8 rounded-full" />
+          </CardFooter>
+        </Card>
       ) : posts.length > 0 ? (
         <>
           <div>
@@ -327,114 +340,108 @@ export default function UserPostsManager() {
 
               return (
                 <div key={post.id}>
-                  <div className="relative flex flex-col gap-8 py-10 md:flex-row md:gap-12 md:py-12">
-                    {/* image: hình vuông 240px */}
-                    <div className="w-full md:w-auto md:flex-shrink-0">
-                      <div className="w-[240px]">
-                        <AspectRatio
-                          ratio={1}
-                          className="overflow-hidden rounded-sm"
-                        >
-                          {post.thumbnailUrl ? (
-                            <Image
-                              src={post.thumbnailUrl}
-                              alt={post.title}
-                              fill
-                              className="object-cover"
-                              unoptimized
-                            />
-                          ) : (
-                            <div className="h-full w-full bg-muted" />
-                          )}
-                        </AspectRatio>
+                  <Link href={`/profile/posts/${post.id}`}>
+                    <div className="flex flex-col gap-8 py-10 md:flex-row md:gap-12 md:py-12">
+                      <div className="w-full md:w-auto md:flex-shrink-0">
+                        <div className="w-[240px]">
+                          <AspectRatio
+                            ratio={1}
+                            className="overflow-hidden rounded-sm"
+                          >
+                            {post.thumbnailUrl ? (
+                              <Image
+                                src={post.thumbnailUrl}
+                                alt={post.title}
+                                fill
+                                className="object-cover"
+                                unoptimized
+                              />
+                            ) : (
+                              <div className="h-full w-full bg-muted" />
+                            )}
+                          </AspectRatio>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* content */}
-                    <div className="flex w-full flex-col justify-between md:flex-1">
-                      <div className="flex flex-col gap-5">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <Link
-                              href={`/posts/${post.id}`}
-                              className="text-3xl font-bold"
-                            >
+                      <div className="flex w-full items-center justify-between">
+                        <div className="flex flex-col items-start justify-center gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="line-clamp-1 text-3xl font-bold">
                               {post.title}
-                            </Link>
+                            </div>
                             <Badge
                               variant={post.published ? "default" : "secondary"}
                             >
                               {post.published ? "Published" : "Draft"}
                             </Badge>
                           </div>
-
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                disabled={postsLoading.value}
-                              >
-                                <MoreHorizontal className="size-5" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem asChild>
-                                <Link href={`/posts/${post.id}`}>
-                                  <Eye className="mr-2 size-4" /> View
-                                </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem asChild>
-                                <Link href={`/posts/${post.id}/edit`}>
-                                  <Eye className="mr-2 size-4" /> Edit
-                                </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                className="text-destructive"
-                                onClick={() => handleDeletePost(post.id)}
-                              >
-                                <Trash2 className="mr-2 size-4" /> Trash
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-
-                        <p className="text-base">{post.content}</p>
-                      </div>
-
-                      {/* info line */}
-                      <div className="mt-8 flex flex-col items-start justify-between md:mt-0 md:flex-row md:items-center">
-                        <div className="flex flex-col md:flex-row md:items-center md:gap-7">
-                          <div className="mb-2 flex items-center gap-3 md:mb-0">
-                            <p className="font-semibold">Text</p>
-                            <span className="underline">{authorName}</span>
-                          </div>
-                          <div className="mb-2 flex items-center gap-3 md:mb-0">
-                            <p className="font-semibold">Date</p>
-                            <span className="underline">
-                              {new Date(post.createdAt).toLocaleDateString()}
+                          <p className="line-clamp-1 text-base">
+                            {post.content}
+                          </p>
+                          <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
+                            <span>
+                              {post.category?.name ||
+                                (post.published ? "Published" : "Draft")}
                             </span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <p className="font-semibold">Read</p>
-                            <span className="underline">{readMin} Min</span>
-                          </div>
+                          </span>
                         </div>
 
-                        <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
-                          <span>
-                            {post.category?.name ||
-                              (post.published ? "Published" : "Draft")}
-                          </span>
-                        </span>
+                        <div className="flex items-center justify-end">
+                          <div className="flex flex-col md:flex-row md:items-center md:gap-7">
+                            <div className="mb-2 flex items-center gap-3 md:mb-0">
+                              <p className="font-semibold">Text</p>
+                              <span className="underline">{authorName}</span>
+                            </div>
+                            <div className="mb-2 flex items-center gap-3 md:mb-0">
+                              <p className="font-semibold">Date</p>
+                              <span>
+                                {new Date(post.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <p className="font-semibold">Read</p>
+                              <span>{readMin} Min</span>
+                            </div>
+
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={postsLoading.value}
+                                >
+                                  <MoreHorizontal className="size-5" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/profile/posts/${post.id}`}>
+                                    <Eye className="mr-2 size-4" /> View
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/posts/${post.id}/edit`}>
+                                    <Eye className="mr-2 size-4" /> Edit
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="text-destructive"
+                                  onClick={() => handleDeletePost(post.id)}
+                                >
+                                  <Trash2 className="mr-2 size-4" /> Trash
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {idx < posts.length - 1 && (
-                    <div className="h-px w-full bg-black" />
-                  )}
+                    {idx < posts.length - 1 && (
+                      <div className="h-px w-full bg-black" />
+                    )}
+                  </Link>
                 </div>
               );
             })}

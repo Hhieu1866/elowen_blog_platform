@@ -59,7 +59,9 @@ const LoginPage = () => {
 
       login(user, access);
       toast.success("Logged in successfully");
-      router.push("/");
+      // logic-only change:
+      router.replace("/"); // thay cho push để không giữ history
+      router.refresh(); // ép layout/Navbar render lại ngay
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Login failed");

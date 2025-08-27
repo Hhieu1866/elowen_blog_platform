@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+// import Navbar from "@/components/Navbar";
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import React, { useState } from "react";
-import UserPostsManager from "./post/UserPostsManager";
+import UserPostsManager from "./posts/UserPostsManager";
 
 export type ProfileTab = "profile" | "posts";
 
@@ -20,7 +20,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* header */}
       <div className="px-6 md:px-48">

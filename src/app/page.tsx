@@ -1,25 +1,14 @@
 import AuthorsSection from "@/components/AuthorsSection";
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import PodcastSection from "@/components/PodcastSection";
 import PostSection from "@/components/PostSection";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="">
-      <Navbar />
       <div className="relative w-full px-6 py-5 md:px-48">
         <Image
           src="/HeadlineArt&Life.png"
@@ -82,7 +71,7 @@ export default function Home() {
             </div>
 
             <Button className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
-              <span>Street Art</span> 
+              <span>Street Art</span>
             </Button>
           </div>
         </div>

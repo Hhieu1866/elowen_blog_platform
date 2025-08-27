@@ -10,12 +10,12 @@ export type AuthUser = {
   readonly role: "USER" | "ADMIN";
 };
 
-// Tạo signals cho trạng thái xác thực
+// Signals cho trạng thái xác thực
 export const isAuthenticated = signal<boolean>(false);
 export const user = signal<AuthUser | null>(null);
 export const token = signal<string | null>(null);
 
-// Khôi phục trạng thái đăng nhập từ localStorage ngay lập tức
+// Khôi phục từ localStorage ngay khi load client
 if (typeof window !== "undefined") {
   const savedToken = localStorage.getItem("token");
   const savedUser = localStorage.getItem("user");
@@ -33,20 +33,17 @@ if (typeof window !== "undefined") {
 }
 
 export const useAuth = () => {
-  // Optional: Sync with localStorage changes across tabs
-
+  // Đồng bộ đa tab (storage event không bắn cho chính tab hiện tại)
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "token") {
         token.value = e.newValue;
         isAuthenticated.value = !!e.newValue;
       }
-
       if (e.key === "user") {
         user.value = e.newValue ? JSON.parse(e.newValue) : null;
       }
     };
-
     window.addEventListener("storage", handleStorageChange);
     return () => removeEventListener("storage", handleStorageChange);
   }, []);
@@ -59,6 +56,8 @@ export const useAuth = () => {
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(userData));
     }
+    // [NOTE] Ở trang Login/Register: sau khi gọi login(...),
+    // nên dùng router.replace("/") + router.refresh() để Navbar cập nhật tức thì.
   };
 
   const logout = () => {
@@ -71,9 +70,7 @@ export const useAuth = () => {
     }
   };
 
-  const isAdmin = () => {
-    return user.value?.role === "ADMIN";
-  };
+  const isAdmin = () => user.value?.role === "ADMIN";
 
   return {
     isAuthenticated,

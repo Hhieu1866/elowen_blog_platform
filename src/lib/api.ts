@@ -1,4 +1,3 @@
-// src/lib/api.ts
 import axios from "axios";
 
 const api = axios.create({
@@ -32,7 +31,7 @@ api.interceptors.response.use(
       // Token hết hạn hoặc không hợp lệ
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      window.location.href = "/login"; // full reload -> UI reset chắc chắn
     }
     return Promise.reject(error);
   },

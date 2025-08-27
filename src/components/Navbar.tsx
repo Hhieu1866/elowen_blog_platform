@@ -37,6 +37,7 @@ const Navbar = () => {
       logout();
       toast.success("Logged out successfully");
       router.push("/login");
+      router.refresh(); // [CHANGED] ép re-render ngay để Navbar cập nhật tức thì
     }
   };
 
@@ -103,24 +104,6 @@ const Navbar = () => {
         <div className="md:hidden">
           <Sheet>
             <div className="flex items-center gap-3">
-              {/* {isAuthenticated.value ? (
-                <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>HH</AvatarFallback>
-                </Avatar>
-              ) : (
-                <div className="flex gap-4">
-                  <Link href="/login" className="uppercase">
-                    Login
-                  </Link>
-                  <Link href="/register" className="uppercase">
-                    Register
-                  </Link>
-                </div>
-              )} */}
               <SheetTrigger>
                 <Menu className="size-10" />
               </SheetTrigger>
@@ -148,9 +131,7 @@ const Navbar = () => {
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         {isAdmin() && (
-                          <DropdownMenuItem
-                            onClick={() => router.push("/admin")}
-                          >
+                          <DropdownMenuItem onClick={() => router.push("/admin")}>
                             Admin Dashboard
                           </DropdownMenuItem>
                         )}

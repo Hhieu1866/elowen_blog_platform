@@ -95,6 +95,7 @@ const PostSection = () => {
                   alt={post.alt}
                   width={1920}
                   height={1080}
+                  priority
                   className="h-auto w-full object-cover"
                 />
               </div>
