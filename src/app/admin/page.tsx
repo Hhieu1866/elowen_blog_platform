@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TagsSection from "./TagsSection";
 import CategoriesSection from "./CategoriesSection";
 import { Loader2 } from "lucide-react";
+import PostsSection from "./PostsSection";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -45,8 +46,8 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen mt-14">
+      <div className="px-6 md:px-48">
         {/* header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin dashboard</h1>
@@ -73,7 +74,9 @@ const AdminDashboard = () => {
           </TabsContent>
 
           {/* posts tab content */}
-          <TabsContent value="posts"></TabsContent>
+          <TabsContent value="posts">
+            <PostsSection />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

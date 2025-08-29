@@ -88,7 +88,6 @@ export default function UserPostsManager() {
   const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
   const [sortBy, setSortBy] = useState<"createdAt" | "updatedAt">("createdAt");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
-  const [deletePostId, setDeletePostId] = useState<string | null>(null);
 
   const postsLoading = useSignal(true);
 
@@ -164,7 +163,6 @@ export default function UserPostsManager() {
     try {
       await api.delete(`/posts/${postId}`);
       toast.success("Post deleted");
-      setDeletePostId(null);
       fetchUserPosts(currentPage);
     } catch (err: any) {
       console.error("Failed to delete post: ", err);
@@ -342,6 +340,7 @@ export default function UserPostsManager() {
                               alt={post.title}
                               fill
                               className="object-cover"
+                              unoptimized
                             />
                           ) : (
                             <div className="h-full w-full bg-muted" />
@@ -353,12 +352,9 @@ export default function UserPostsManager() {
                     <div className="flex w-full items-center justify-between">
                       <div className="flex max-w-[630px] flex-col items-start justify-center gap-3">
                         <div className="flex items-center gap-3">
-                          <Link href={`/profile/posts/${post.id}`}>
-                            <div className="line-clamp-1 text-3xl font-bold">
-                              {post.title}
-                            </div>
-                          </Link>
-
+                          <div className="line-clamp-1 text-3xl font-bold">
+                            {post.title}
+                          </div>
                           <Badge
                             variant={post.published ? "default" : "secondary"}
                           >
@@ -404,23 +400,50 @@ export default function UserPostsManager() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem asChild>
                                 <Link href={`/profile/posts/${post.id}`}>
-                                  <Eye className="mr-2 size-4" /> View
+                                  <PencilLine className="mr-2 size-4" /> View
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem asChild>
                                 <Link href={`/posts/${post.id}/edit`}>
-                                  <PencilLine className="mr-2 size-4" /> Edit
+                                  <Eye className="mr-2 size-4" /> Edit
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                className="text-destructive"
-                                onSelect={(e) => {
-                                  e.preventDefault();
-                                  setDeletePostId(post.id);
-                                }}
-                              >
-                                <Trash2 className="mr-2 size-4" /> Delete
+                              <DropdownMenuItem className="text-destructive">
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <div className="flex items-center gap-2">
+                                      <Trash2 className="mr-2 size-4" />
+                                      Delete
+                                    </div>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>
+                                        Are you sure you want to delete this
+                                        post?
+                                      </AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        This action cannot be undone. It will
+                                        permanently delete the post and remove
+                                        it from your profile.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>
+                                        Cancel
+                                      </AlertDialogCancel>
+                                      <AlertDialogAction
+                                        onClick={() =>
+                                          handleDeletePost(post.id)
+                                        }
+                                        className="bg-destructive text-white hover:bg-destructive/90"
+                                      >
+                                        Yes, delete it
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -499,35 +522,6 @@ export default function UserPostsManager() {
           </Button>
         </div>
       )}
-
-      {/* Global AlertDialog for delete confirmation */}
-      <AlertDialog
-        open={!!deletePostId}
-        onOpenChange={(open) => !open && setDeletePostId(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to delete this post?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. It will permanently delete the post
-              and remove it from your profile.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDeletePostId(null)}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deletePostId && handleDeletePost(deletePostId)}
-              className="bg-destructive text-white hover:bg-destructive/90"
-            >
-              Yes, delete it
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
