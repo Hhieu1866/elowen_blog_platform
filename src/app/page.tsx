@@ -56,17 +56,17 @@ export default function Home() {
           </div>
           <div className="mt-8 flex flex-col items-start justify-between md:mt-0 md:flex-row md:items-center">
             <div className="flex flex-col md:flex-row md:items-center md:gap-7">
-              <div className="mb-2 flex items-center gap-3 md:mb-0">
+              <div className="mb-2 flex items-center gap-2 md:mb-0">
                 <p className="font-semibold">Text</p>
                 <span className="underline">Cristofer Vaccaro</span>
               </div>
-              <div className="mb-2 flex items-center gap-3 md:mb-0">
+              <div className="mb-2 flex items-center gap-2 md:mb-0">
                 <p className="font-semibold">Date</p>
-                <span className="underline">September 22, 2022</span>
+                <span>September 22, 2022</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <p className="font-semibold">Read</p>
-                <span className="underline">50 Min</span>
+                <span>50 Min</span>
               </div>
             </div>
 
@@ -83,6 +83,7 @@ export default function Home() {
           alt="banner"
           width={1920}
           height={1080}
+          priority
           className="h-auto w-full object-cover"
         />
       </div>
@@ -104,9 +105,6 @@ export default function Home() {
 
       {/* AUTHORS */}
       <AuthorsSection />
-
-      {/* FOOTER */}
-      <Footer />
     </div>
   );
 }

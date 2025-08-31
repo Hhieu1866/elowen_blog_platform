@@ -408,7 +408,7 @@ export default function UserPostsManager() {
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem asChild>
-                                <Link href={`/posts/${post.id}/edit`}>
+                                <Link href={`/profile/posts/${post.id}/edit`}>
                                   <PencilLine className="mr-2 size-4" /> Edit
                                 </Link>
                               </DropdownMenuItem>

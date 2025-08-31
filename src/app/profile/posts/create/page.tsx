@@ -195,6 +195,8 @@ export default function CreatePostPage() {
                     resourceType: "image",
                     singleUploadAutoClose: false,
                     showCompletedButton: true,
+                    maxFileSize: 5000000, // 5MB
+                    clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
                   }}
                   onSuccess={(result: any) => {
                     const url = result?.info?.secure_url as string | undefined;

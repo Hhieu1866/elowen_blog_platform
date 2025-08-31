@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -29,162 +26,135 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import api from "@/lib/api";
 import { CldUploadWidget } from "next-cloudinary";
-import { useSignal } from "@preact/signals-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 type Category = { id: string; name: string };
 type Tag = { id: string; name: string };
 
-type PostForEdit = {
-  id: string;
-  title: string;
-  content: string;
-  published: boolean;
-  createdAt: string;
-  updatedAt: string;
-  thumbnailUrl?: string | null;
-  category?: { id: string; name: string } | null;
-  tags?: { id: string; name: string }[];
-};
-
 export default function EditPostPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  // form state
+  // Form states
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // tạm textarea
+  const [content, setContent] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
-
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
   const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [published, setPublished] = useState<boolean>(true);
 
-  // keep original for diff (optional)
-  const [original, setOriginal] = useState<PostForEdit | null>(null);
+  // Data states
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
-  // signals
-  const pageLoading = useSignal(true); // load post detail
-  const saving = useSignal(false); // submit PUT
-  const catsLoading = useSignal(false);
-  const tagsLoading = useSignal(false);
-  const errorMsg = useSignal<string | null>(null);
+  // Loading states
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
 
-  // load categories
+  // Load categories
   useEffect(() => {
-    (async () => {
+    const loadCategories = async () => {
       try {
-        catsLoading.value = true;
         const res = await api.get("/categories");
         setCategories(res.data?.data ?? []);
       } catch (e: any) {
         const msg = resErr(e, "Failed to load categories");
-        errorMsg.value = msg;
+        setErrorMsg(msg);
         toast.error(msg);
-      } finally {
-        catsLoading.value = false;
       }
-    })();
+    };
+    loadCategories();
   }, []);
 
-  // load tags
+  // Load tags
   useEffect(() => {
-    (async () => {
+    const loadTags = async () => {
       try {
-        tagsLoading.value = true;
         const res = await api.get("/tags");
         setTags(res.data?.data ?? []);
       } catch (e: any) {
         const msg = resErr(e, "Failed to load tags");
-        errorMsg.value = msg;
+        setErrorMsg(msg);
         toast.error(msg);
-      } finally {
-        tagsLoading.value = false;
       }
-    })();
+    };
+    loadTags();
   }, []);
 
-  // load post detail
+  // Load post data
   useEffect(() => {
     if (!id) return;
-    let alive = true;
-    (async () => {
+
+    const loadPost = async () => {
       try {
-        pageLoading.value = true;
-        errorMsg.value = null;
+        setIsLoading(true);
+        setErrorMsg(null);
 
         const res = await api.get(`/posts/${id}`);
-        if (!alive) return;
+        const postData = res.data?.data;
 
-        const p: PostForEdit = res.data?.data;
-        setOriginal(p);
-
-        // set form
-        setTitle(p.title || "");
-        setContent(p.content || "");
-        setThumbnailUrl(p.thumbnailUrl ?? null);
-        setCategoryId(p.category?.id ?? undefined);
-        setSelectedTagIds((p.tags ?? []).map((t) => t.id));
-        setPublished(Boolean(p.published));
+        if (postData) {
+          setTitle(postData.title || "");
+          setContent(postData.content || "");
+          setThumbnailUrl(postData.thumbnailUrl || null);
+          setCategoryId(postData.category?.id || undefined);
+          setSelectedTagIds(postData.tags?.map((tag: Tag) => tag.id) || []);
+          setPublished(postData.published || false);
+        }
       } catch (e: any) {
         const msg = resErr(e, "Failed to load post");
-        errorMsg.value = msg;
+        setErrorMsg(msg);
         toast.error(msg);
       } finally {
-        pageLoading.value = false;
+        setIsLoading(false);
       }
-    })();
-    return () => {
-      alive = false;
     };
+
+    loadPost();
   }, [id]);
 
-  const toggleTag = (tid: string) => {
+  const toggleTag = (tagId: string) => {
     setSelectedTagIds((prev) =>
-      prev.includes(tid) ? prev.filter((x) => x !== tid) : [...prev, tid],
+      prev.includes(tagId) ? prev.filter((t) => t !== tagId) : [...prev, tagId],
     );
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id) return;
+    setErrorMsg(null);
 
     if (!title.trim() || !content.trim()) {
       const msg = "Please fill in title and content";
-      errorMsg.value = msg;
+      setErrorMsg(msg);
       toast.error(msg);
       return;
     }
 
     try {
-      saving.value = true;
-      errorMsg.value = null;
+      setIsLoading(true);
 
-      // gửi tối giản: chỉ các field đang có (API của bạn chấp nhận optional)
       const payload: any = {
-        title,
-        content,
+        title: title.trim(),
+        content: content.trim(),
         published,
-        thumbnailUrl: thumbnailUrl || undefined,
-        categoryId: categoryId ?? null, // null để gỡ category
-        tagIds: selectedTagIds, // set list
+        ...(thumbnailUrl ? { thumbnailUrl } : {}),
+        categoryId: categoryId ?? null,
+        ...(selectedTagIds.length ? { tagIds: selectedTagIds } : {}),
       };
 
       await api.put(`/posts/${id}`, payload);
 
       toast.success("Post updated successfully");
-      router.push(`/profile/posts/${id}`); // hoặc router.back()
+      router.push(`/profile/posts/${id}`);
     } catch (e: any) {
       const msg = resErr(e, "Failed to update post");
-      errorMsg.value = msg;
+      setErrorMsg(msg);
       toast.error(msg);
     } finally {
-      saving.value = false;
+      setIsLoading(false);
     }
   };
 
@@ -192,22 +162,17 @@ export default function EditPostPage() {
     <div className="px-6 py-8 md:px-48">
       <Card className="mx-auto max-w-3xl">
         <CardHeader>
-          <CardTitle>Edit post</CardTitle>
+          <CardTitle>Edit Post</CardTitle>
           <CardDescription>
-            Update the content, cover image, category & tags. (Textarea for now)
+            Update your post title, content, image and settings.
           </CardDescription>
         </CardHeader>
 
         <form onSubmit={onSubmit}>
           <CardContent className="space-y-6">
-            {pageLoading.value && (
-              <div className="rounded-md border px-3 py-2 text-sm">
-                Loading post…
-              </div>
-            )}
-            {errorMsg.value && !pageLoading.value && (
+            {errorMsg && (
               <div className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
-                {errorMsg.value}
+                {errorMsg}
               </div>
             )}
 
@@ -218,7 +183,9 @@ export default function EditPostPage() {
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                disabled={saving.value || pageLoading.value}
+                placeholder="Enter your post title"
+                required
+                disabled={isLoading}
               />
             </div>
 
@@ -230,52 +197,66 @@ export default function EditPostPage() {
                 className="min-h-[200px]"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                disabled={saving.value || pageLoading.value}
+                placeholder="Write your post content here..."
+                disabled={isLoading}
               />
             </div>
 
-            {/* Thumbnail */}
+            {/* Thumbnail upload */}
             <div className="space-y-2">
-              <Label>Thumbnail</Label>
+              <Label>Post Image</Label>
               <div className="flex items-center gap-4">
                 <CldUploadWidget
                   uploadPreset={uploadPreset}
                   options={{
                     multiple: false,
-                    sources: ["local", "url", "camera"],
+                    sources: ["local", "url"],
                     resourceType: "image",
                     singleUploadAutoClose: false,
                     showCompletedButton: true,
+                    maxFileSize: 5000000, // 5MB
+                    clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
                   }}
                   onSuccess={(result: any) => {
                     const url = result?.info?.secure_url as string | undefined;
                     if (url) {
                       setThumbnailUrl(url);
-                      toast.success("Thumbnail uploaded");
+                      toast.success("Image uploaded successfully!");
                     }
                   }}
                 >
                   {({ open }) => (
                     <Button
                       type="button"
-                      variant="secondary"
+                      variant="outline"
                       onClick={() => open?.()}
-                      disabled={saving.value || pageLoading.value}
+                      disabled={isLoading}
                     >
-                      Upload new thumbnail
+                      {thumbnailUrl ? "Change Image" : "Upload Image"}
                     </Button>
                   )}
                 </CldUploadWidget>
 
                 {thumbnailUrl && (
-                  <Image
-                    src={thumbnailUrl}
-                    alt="thumbnail preview"
-                    width={128}
-                    height={80}
-                    unoptimized
-                    className="h-20 w-32 rounded-md border object-cover"
-                  />
+                  <div className="relative">
+                    <Image
+                      src={thumbnailUrl}
+                      alt="Post image"
+                      width={100}
+                      height={60}
+                      className="h-15 w-25 rounded border object-cover"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => setThumbnailUrl(null)}
+                      disabled={isLoading}
+                      className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs"
+                    >
+                      ×
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
@@ -286,22 +267,16 @@ export default function EditPostPage() {
               <Select
                 value={categoryId ?? "#"}
                 onValueChange={(v) => setCategoryId(v === "#" ? undefined : v)}
-                disabled={
-                  saving.value || pageLoading.value || catsLoading.value
-                }
+                disabled={isLoading}
               >
                 <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      catsLoading.value ? "Loading..." : "Select a category"
-                    }
-                  />
+                  <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="#">No category</SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.name}
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -312,27 +287,27 @@ export default function EditPostPage() {
             <div className="space-y-3">
               <Label>Tags</Label>
               <div className="max-h-44 overflow-auto rounded-md">
-                {tagsLoading.value ? (
-                  <p className="text-sm text-muted-foreground">Loading tags…</p>
-                ) : tags.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No tags yet</p>
+                {tags.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No tags available
+                  </p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag) => {
-                      const active = selectedTagIds.includes(tag.id);
+                      const isActive = selectedTagIds.includes(tag.id);
                       return (
                         <button
                           key={tag.id}
                           type="button"
+                          disabled={isLoading}
                           onClick={() => toggleTag(tag.id)}
-                          disabled={saving.value || pageLoading.value}
                           className={cn(
                             "rounded-full border px-4 py-1",
-                            active
+                            isActive
                               ? "border-black bg-black text-white"
                               : "border-black bg-white text-black hover:bg-black/5",
                           )}
-                          aria-pressed={active}
+                          aria-pressed={isActive}
                         >
                           {tag.name}
                         </button>
@@ -346,29 +321,31 @@ export default function EditPostPage() {
               </p>
             </div>
 
-            {/* Publish */}
+            {/* Publish toggle */}
             <div className="flex items-center gap-2">
               <Checkbox
                 id="published"
                 checked={published}
                 onCheckedChange={(v) => setPublished(Boolean(v))}
-                disabled={saving.value || pageLoading.value}
+                disabled={isLoading}
               />
-              <Label htmlFor="published">Published</Label>
+              <Label htmlFor="published">
+                Publish this post (make it visible to everyone)
+              </Label>
             </div>
           </CardContent>
 
           <CardFooter className="flex justify-end gap-3">
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               onClick={() => router.back()}
-              disabled={saving.value}
+              disabled={isLoading}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={saving.value || pageLoading.value}>
-              {saving.value ? "Saving…" : "Save changes"}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Updating..." : "Update Post"}
             </Button>
           </CardFooter>
         </form>

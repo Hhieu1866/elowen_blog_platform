@@ -5,8 +5,10 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import { useSignal } from "@preact/signals-react";
 import {
@@ -14,6 +16,7 @@ import {
   ArrowRight,
   Facebook,
   Instagram,
+  SendHorizontal,
   Twitter,
 } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +24,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import CommentSection from "./CommentSection";
 
 type Post = {
   id: string;
@@ -333,11 +337,14 @@ export default function PostDetailPage() {
 
         {/* right - post content */}
         <div className="prose max-w-none text-justify md:w-2/3">
-          {/* Nếu content là plain text: render trực tiếp;
-              nếu là HTML đã sanitize: dùng dangerouslySetInnerHTML */}
           <p style={{ whiteSpace: "pre-line" }}>{post.content}</p>
         </div>
       </div>
+
+      <Separator className="bg-black" />
+
+      {/* COMMENT SECTION */}
+      <CommentSection />
 
       <Separator className="bg-black" />
 
