@@ -128,7 +128,7 @@ export default function CreatePostAdminPage() {
       await api.post("/posts", payload);
 
       toast.success("Post created successfully");
-      router.push("/profile");
+      router.push("/admin");
     } catch (e: any) {
       const msg = resErr(e, "Failed to create post");
       errorMsg.value = msg;

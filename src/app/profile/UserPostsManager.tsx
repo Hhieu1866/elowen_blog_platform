@@ -282,7 +282,7 @@ export default function UserPostsManager() {
           asChild
           className="btn-sweep-effect rounded-none border border-black bg-black text-white before:bg-white hover:text-black"
         >
-          <Link href="/profile/posts/create">
+          <Link href="/posts/create">
             <Plus />
             <span>Create new post</span>
           </Link>
@@ -351,9 +351,9 @@ export default function UserPostsManager() {
                     </div>
 
                     <div className="flex w-full items-center justify-between">
-                      <div className="flex max-w-[630px] flex-col items-start justify-center gap-3">
+                      <div className="flex max-w-[500px] flex-col items-start justify-center gap-3">
                         <div className="flex items-center gap-3">
-                          <Link href={`/profile/posts/${post.id}`}>
+                          <Link href={`/posts/${post.id}`}>
                             <div className="line-clamp-1 text-3xl font-bold">
                               {post.title}
                             </div>
@@ -403,12 +403,12 @@ export default function UserPostsManager() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem asChild>
-                                <Link href={`/profile/posts/${post.id}`}>
+                                <Link href={`/posts/${post.id}`}>
                                   <Eye className="mr-2 size-4" /> View
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem asChild>
-                                <Link href={`/profile/posts/${post.id}/edit`}>
+                                <Link href={`/posts/${post.id}/edit`}>
                                   <PencilLine className="mr-2 size-4" /> Edit
                                 </Link>
                               </DropdownMenuItem>
@@ -495,7 +495,7 @@ export default function UserPostsManager() {
           <p>No posts yet</p>
           <p>Get started by creating your first post</p>
           <Button asChild className="mt-6">
-            <Link href="/create-post">Create your first post</Link>
+            <Link href="/posts/create">Create your first post</Link>
           </Button>
         </div>
       )}

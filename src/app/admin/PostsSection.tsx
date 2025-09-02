@@ -280,7 +280,7 @@ export default function UserPostsManager() {
           asChild
           className="btn-sweep-effect rounded-none border border-black bg-black text-white before:bg-white hover:text-black"
         >
-          <Link href="/profile/posts/create">
+          <Link href="/posts/create">
             <Plus />
             <span>Create new post</span>
           </Link>
@@ -399,7 +399,7 @@ export default function UserPostsManager() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem asChild>
-                                <Link href={`/profile/posts/${post.id}`}>
+                                <Link href={`/posts/${post.id}`}>
                                   <PencilLine className="mr-2 size-4" /> View
                                 </Link>
                               </DropdownMenuItem>
@@ -518,7 +518,7 @@ export default function UserPostsManager() {
           <p>No posts yet</p>
           <p>Get started by creating your first post</p>
           <Button asChild className="mt-6">
-            <Link href="/create-post">Create your first post</Link>
+            <Link href="/posts/create">Create your first post</Link>
           </Button>
         </div>
       )}

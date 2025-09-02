@@ -8,7 +8,6 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import { useSignal } from "@preact/signals-react";
 import {
@@ -16,7 +15,6 @@ import {
   ArrowRight,
   Facebook,
   Instagram,
-  SendHorizontal,
   Twitter,
 } from "lucide-react";
 import Image from "next/image";
@@ -344,7 +342,7 @@ export default function PostDetailPage() {
       <Separator className="bg-black" />
 
       {/* COMMENT SECTION */}
-      <CommentSection />
+      <CommentSection postId={post.id} initialComments={post.comments ?? []} />
 
       <Separator className="bg-black" />
 

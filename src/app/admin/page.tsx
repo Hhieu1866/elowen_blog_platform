@@ -9,6 +9,7 @@ import TagsSection from "./TagsSection";
 import CategoriesSection from "./CategoriesSection";
 import { Loader2 } from "lucide-react";
 import PostsSection from "./PostsSection";
+import ListUsersSection from "./ListUsersSection";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen mt-14">
+    <div className="mt-14 min-h-screen">
       <div className="px-6 md:px-48">
         {/* header */}
         <div className="mb-8">
@@ -76,6 +77,11 @@ const AdminDashboard = () => {
           {/* posts tab content */}
           <TabsContent value="posts">
             <PostsSection />
+          </TabsContent>
+
+          {/* users tab content */}
+          <TabsContent value="users">
+            <ListUsersSection />
           </TabsContent>
         </Tabs>
       </div>

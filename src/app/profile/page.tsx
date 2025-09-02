@@ -11,7 +11,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import React, { useState } from "react";
-import UserPostsManager from "./posts/UserPostsManager";
+import UserPostsManager from "./UserPostsManager";
+import UserProfile from "./UserProfile";
 
 export type ProfileTab = "profile" | "posts";
 
@@ -50,15 +51,9 @@ const ProfilePage = () => {
 
           {/* tab content */}
           <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>Thông tin cá nhân</CardTitle>
-                <CardDescription>
-                  Quản lý thông tin hồ sơ của bạn
-                </CardDescription>
-              </CardHeader>
-              <CardContent>{/* <ProfileInfo /> */}</CardContent>
-            </Card>
+            <h1 className="text-xl font-bold">Account</h1>
+            <p>Manage settings related to your account</p>
+            <UserProfile />
           </TabsContent>
           <TabsContent value="posts">
             <Card>
