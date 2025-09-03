@@ -78,5 +78,6 @@ export const useAuth = () => {
     login,
     logout,
     isAdmin,
+    token,
   };
 };
