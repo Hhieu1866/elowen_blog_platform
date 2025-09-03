@@ -75,7 +75,7 @@ const Navbar = () => {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {isAdmin() && (
-                    <DropdownMenuItem onClick={() => router.push("/admin")}>
+                    <DropdownMenuItem onClick={() => router.push("/dashboard")}>
                       Admin Dashboard
                     </DropdownMenuItem>
                   )}
@@ -131,7 +131,7 @@ const Navbar = () => {
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         {isAdmin() && (
-                          <DropdownMenuItem onClick={() => router.push("/admin")}>
+                          <DropdownMenuItem onClick={() => router.push("/dashboard")}>
                             Admin Dashboard
                           </DropdownMenuItem>
                         )}

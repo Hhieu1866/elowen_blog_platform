@@ -189,7 +189,7 @@ export default function UserPostsManager() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mt-5 space-y-6">
       {/* toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
@@ -329,32 +329,34 @@ export default function UserPostsManager() {
 
               return (
                 <div key={post.id}>
-                  <div className="flex flex-col gap-8 py-10 md:flex-row md:gap-12 md:py-12">
+                  <div className="flex flex-col gap-8 py-5 md:flex-row">
                     <div className="w-full md:w-auto md:flex-shrink-0">
-                      <div className="w-[240px]">
-                        <AspectRatio
-                          ratio={1}
-                          className="overflow-hidden rounded-sm"
-                        >
-                          {post.thumbnailUrl ? (
-                            <Image
-                              src={post.thumbnailUrl}
-                              alt={post.title}
-                              fill
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="h-full w-full bg-muted" />
-                          )}
-                        </AspectRatio>
-                      </div>
+                      <Link href={`/posts/${post.id}`}>
+                        <div className="w-[150px]">
+                          <AspectRatio
+                            ratio={1}
+                            className="overflow-hidden rounded-sm"
+                          >
+                            {post.thumbnailUrl ? (
+                              <Image
+                                src={post.thumbnailUrl}
+                                alt={post.title}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="h-full w-full bg-muted" />
+                            )}
+                          </AspectRatio>
+                        </div>
+                      </Link>
                     </div>
 
                     <div className="flex w-full items-center justify-between">
-                      <div className="flex max-w-[500px] flex-col items-start justify-center gap-3">
+                      <div className="flex max-w-[400px] flex-col items-start justify-center gap-3">
                         <div className="flex items-center gap-3">
                           <Link href={`/posts/${post.id}`}>
-                            <div className="line-clamp-1 text-3xl font-bold">
+                            <div className="line-clamp-1 text-2xl font-bold">
                               {post.title}
                             </div>
                           </Link>
@@ -367,7 +369,7 @@ export default function UserPostsManager() {
                         </div>
                         <p className="line-clamp-1 text-base">{post.content}</p>
                         <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
-                          <span>
+                          <span className="text-sm">
                             {post.category?.name ||
                               (post.published ? "Published" : "Draft")}
                           </span>

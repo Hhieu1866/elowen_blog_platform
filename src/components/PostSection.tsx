@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { AspectRatio } from "./ui/aspect-ratio";
 import Loading from "./Loading";
 import { Skeleton } from "./ui/skeleton";
+import Link from "next/link";
 
 interface Post {
   id: string;
@@ -151,29 +152,33 @@ const PostSection = () => {
               <div key={post.id}>
                 <div className="flex flex-col gap-8 py-10 md:flex-row md:gap-12 md:py-12">
                   {/* image */}
-                  <div className="w-[240px]">
-                    <AspectRatio
-                      ratio={1}
-                      className="overflow-hidden rounded-sm"
-                    >
-                      {post.thumbnailUrl ? (
-                        <Image
-                          src={post.thumbnailUrl || "/fallback.webp"}
-                          alt={post.title}
-                          fill
-                          className="object-cover"
-                          priority
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-muted" />
-                      )}
-                    </AspectRatio>
-                  </div>
+                  <Link href={`/posts/${post.id}`}>
+                    <div className="w-[240px]">
+                      <AspectRatio
+                        ratio={1}
+                        className="overflow-hidden rounded-sm"
+                      >
+                        {post.thumbnailUrl ? (
+                          <Image
+                            src={post.thumbnailUrl || "/fallback.webp"}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            priority
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-muted" />
+                        )}
+                      </AspectRatio>
+                    </div>
+                  </Link>
 
                   {/* content */}
                   <div className="flex flex-1 flex-col justify-between">
                     <div className="flex flex-col gap-5">
-                      <h1 className="text-3xl font-bold">{post.title}</h1>
+                      <Link href={`/posts/${post.id}`}>
+                        <h1 className="text-3xl font-bold">{post.title}</h1>
+                      </Link>
                       <p className="line-clamp-3 text-base">{post.content}</p>
                     </div>
 

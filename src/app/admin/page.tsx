@@ -7,9 +7,21 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TagsSection from "./TagsSection";
 import CategoriesSection from "./CategoriesSection";
-import { Loader2 } from "lucide-react";
+import {
+  ChartBarStacked,
+  Loader2,
+  NotebookPen,
+  Tags,
+  User,
+} from "lucide-react";
 import PostsSection from "./PostsSection";
 import ListUsersSection from "./ListUsersSection";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -56,33 +68,96 @@ const AdminDashboard = () => {
         </div>
 
         {/* tabs navigation */}
-        <Tabs defaultValue="tags" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="tags">Tags</TabsTrigger>
-            <TabsTrigger value="posts">Posts</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-          </TabsList>
+        <Tabs
+          defaultValue="users"
+          orientation="vertical"
+          className="w-full flex-row items-start gap-3"
+        >
+          <aside className="sticky top-6 self-start">
+            <TabsList className="flex-col p-1">
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <TabsTrigger value="users" className="py-3">
+                        <User size={16} aria-hidden="true" />
+                      </TabsTrigger>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="px-2 py-1 text-xs">
+                    Users
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-          {/* Categories Tab Content */}
-          <TabsContent value="categories">
-            <CategoriesSection />
-          </TabsContent>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <TabsTrigger value="posts" className="py-3">
+                        <NotebookPen size={16} aria-hidden="true" />
+                      </TabsTrigger>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="px-2 py-1 text-xs">
+                    Posts
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-          {/* tags tab content */}
-          <TabsContent value="tags">
-            <TagsSection />
-          </TabsContent>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <TabsTrigger value="categories" className="py-3">
+                        <ChartBarStacked size={16} aria-hidden="true" />
+                      </TabsTrigger>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="px-2 py-1 text-xs">
+                    Categories
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-          {/* posts tab content */}
-          <TabsContent value="posts">
-            <PostsSection />
-          </TabsContent>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <TabsTrigger value="tags" className="py-3">
+                        <Tags size={16} aria-hidden="true" />
+                      </TabsTrigger>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="px-2 py-1 text-xs">
+                    Tags
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TabsList>
+          </aside>
 
-          {/* users tab content */}
-          <TabsContent value="users">
-            <ListUsersSection />
-          </TabsContent>
+          <div className="flex-1 rounded-md border p-6 text-start">
+            {/* Categories Tab Content */}
+            <TabsContent value="categories">
+              <CategoriesSection />
+            </TabsContent>
+
+            {/* tags tab content */}
+            <TabsContent value="tags">
+              <TagsSection />
+            </TabsContent>
+
+            {/* posts tab content */}
+            <TabsContent value="posts">
+              <PostsSection />
+            </TabsContent>
+
+            {/* users tab content */}
+            <TabsContent value="users">
+              <ListUsersSection />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>

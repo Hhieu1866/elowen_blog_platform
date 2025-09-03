@@ -155,126 +155,147 @@ const UserProfile = () => {
 
   return (
     <div className="mt-5 space-y-5">
-      <Card>
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>Manage profile settings</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+      <div className="space-y-6">
+        <div className="space-y-3">
+          <h2 className="font-semibold">Full name</h2>
+          <div className="space-y-1">
+            <Label htmlFor="name" className="text-xs">
+              Name
+            </Label>
+            <div className="flex items-center gap-3">
               <Input
                 id="name"
                 value={profileForm.name}
                 onChange={(e) =>
                   setProfileForm((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="max-w-80"
+                className="w-1/3 font-semibold shadow"
                 placeholder="Enter your name"
                 disabled={isUpdatingProfile}
               />
+              <Button
+                onClick={handleUpdateProfile}
+                disabled={isUpdatingProfile || profileForm.name === user?.name}
+                className="w-full sm:w-auto"
+              >
+                {isUpdatingProfile ? "Saving..." : "Save"}
+              </Button>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                value={profileForm.email}
-                disabled
-                className="bg-gray-50"
-              />
-              <p className="text-sm text-gray-500">Email cannot be changed</p>
-            </div>
-
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
-            <Button
-              onClick={handleUpdateProfile}
-              disabled={isUpdatingProfile || profileForm.name === user?.name}
-              className="w-full sm:w-auto"
-            >
-              {isUpdatingProfile ? "Saving..." : "Save"}
-            </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Change password</CardTitle>
-          <CardDescription>Update your password securely</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="currentPassword">Current password</Label>
-              <Input
-                id="currentPassword"
-                type="password"
-                value={passwordForm.currentPassword}
-                onChange={(e) =>
-                  setPasswordForm((prev) => ({
-                    ...prev,
-                    currentPassword: e.target.value,
-                  }))
-                }
-                placeholder="Enter current password"
-                disabled={isChangingPassword}
-              />
-            </div>
+        <Separator />
 
-            <div className="space-y-2">
-              <Label htmlFor="newPassword">New Password</Label>
-              <Input
-                id="newPassword"
-                type="password"
-                value={passwordForm.newPassword}
-                onChange={(e) =>
-                  setPasswordForm((prev) => ({
-                    ...prev,
-                    newPassword: e.target.value,
-                  }))
-                }
-                placeholder="Enter new password"
-                disabled={isChangingPassword}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={passwordForm.confirmPassword}
-                onChange={(e) =>
-                  setPasswordForm((prev) => ({
-                    ...prev,
-                    confirmPassword: e.target.value,
-                  }))
-                }
-                placeholder="Confirm new password"
-                disabled={isChangingPassword}
-              />
-            </div>
-
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
-            <Button
-              onClick={handleChangePassword}
-              disabled={
-                isChangingPassword ||
-                !passwordForm.currentPassword ||
-                !passwordForm.newPassword ||
-                !passwordForm.confirmPassword
-              }
-              className="w-full sm:w-auto"
-            >
-              {isChangingPassword ? "Changing Password..." : "Change Password"}
-            </Button>
+        <div className="space-y-3">
+          <div>
+            <h2 className="font-semibold">Contact email</h2>
+            <p className="text-xs font-medium text-gray-500">
+              Manage your accounts email address for the invoices
+            </p>
           </div>
-        </CardContent>
-      </Card>
+          <div className="space-y-1">
+            <Label htmlFor="email font-bold" className="text-xs">
+              Email
+            </Label>
+            <Input
+              id="email"
+              value={profileForm.email}
+              disabled
+              className="w-1/3 font-semibold shadow"
+            />
+          </div>
+          <p className="text-sm italic text-gray-500">
+            Email cannot be changed
+          </p>
+        </div>
+
+        <Separator />
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+      </div>
+
+      <div className="space-y-3">
+        <div>
+          <h2 className="font-semibold">Password</h2>
+          <p className="text-xs font-medium text-gray-500">
+            Modify your current password
+          </p>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="currentPassword" className="text-xs">
+            Current password
+          </Label>
+          <Input
+            id="currentPassword"
+            type="password"
+            value={passwordForm.currentPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                currentPassword: e.target.value,
+              }))
+            }
+            placeholder="Enter current password"
+            className="w-1/3 font-semibold shadow"
+            disabled={isChangingPassword}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor="newPassword" className="text-xs">
+            New Password
+          </Label>
+          <Input
+            id="newPassword"
+            type="password"
+            value={passwordForm.newPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                newPassword: e.target.value,
+              }))
+            }
+            placeholder="Enter new password"
+            className="w-1/3 font-semibold shadow"
+            disabled={isChangingPassword}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor="confirmPassword" className="text-xs">
+            Confirm New Password
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            value={passwordForm.confirmPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                confirmPassword: e.target.value,
+              }))
+            }
+            placeholder="Confirm new password"
+            className="w-1/3 font-semibold shadow"
+            disabled={isChangingPassword}
+          />
+        </div>
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+
+        <Button
+          onClick={handleChangePassword}
+          disabled={
+            isChangingPassword ||
+            !passwordForm.currentPassword ||
+            !passwordForm.newPassword ||
+            !passwordForm.confirmPassword
+          }
+          className="w-full sm:w-auto"
+        >
+          {isChangingPassword ? "Changing Password..." : "Change Password"}
+        </Button>
+      </div>
     </div>
   );
 };
