@@ -19,6 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import api from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 
 // Types
 interface Comment {
@@ -29,6 +30,8 @@ interface Comment {
     id: string;
     name: string | null;
   };
+  parentId: string | null;
+  replies?: Comment[];
 }
 
 interface CommentSectionProps {
@@ -36,8 +39,12 @@ interface CommentSectionProps {
   initialComments: Comment[];
 }
 
-const CommentSection = ({ postId, initialComments }: CommentSectionProps) => {
-  // States - Tách loading states cho UX tốt hơn
+const CommentSection = ({
+  postId,
+  initialComments = [],
+}: CommentSectionProps) => {
+  const { user: currentUser, token } = useAuth();
+
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
   const [isLoadingComments, setIsLoadingComments] = useState(false);
@@ -111,6 +118,9 @@ const CommentSection = ({ postId, initialComments }: CommentSectionProps) => {
       setIsAddingComment(false);
     }
   };
+
+  // add reply
+
 
   // Delete comment - Loading riêng cho từng comment
   const handleDeleteComment = async (commentId: string) => {

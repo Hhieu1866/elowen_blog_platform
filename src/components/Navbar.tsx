@@ -37,7 +37,7 @@ const Navbar = () => {
       logout();
       toast.success("Logged out successfully");
       router.push("/login");
-      router.refresh(); // [CHANGED] ép re-render ngay để Navbar cập nhật tức thì
+      router.refresh();
     }
   };
 
@@ -127,11 +127,16 @@ const Navbar = () => {
                           <AvatarFallback>HH</AvatarFallback>
                         </Avatar>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="mt-2 shadow-xl">
+                      <DropdownMenuContent
+                        align="start"
+                        className="mt-2 shadow-xl"
+                      >
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         {isAdmin() && (
-                          <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                          <DropdownMenuItem
+                            onClick={() => router.push("/dashboard")}
+                          >
                             Admin Dashboard
                           </DropdownMenuItem>
                         )}

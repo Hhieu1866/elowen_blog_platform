@@ -32,6 +32,24 @@ import { CldUploadWidget } from "next-cloudinary";
 import { useSignal } from "@preact/signals-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import {
+  BtnBold,
+  BtnBulletList,
+  BtnClearFormatting,
+  BtnItalic,
+  BtnLink,
+  BtnNumberedList,
+  BtnRedo,
+  BtnStrikeThrough,
+  BtnStyles,
+  BtnUnderline,
+  BtnUndo,
+  Editor,
+  EditorProvider,
+  HtmlButton,
+  Separator,
+  Toolbar,
+} from "react-simple-wysiwyg";
 
 type Category = { id: string; name: string };
 type Tag = { id: string; name: string };
@@ -41,7 +59,7 @@ export default function CreatePostPage() {
 
   // form
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // tạm dùng textarea
+  const [content, setContent] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   // category & tags
@@ -173,14 +191,42 @@ export default function CreatePostPage() {
             {/* Content (textarea) */}
             <div className="space-y-2">
               <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
-                className="min-h-[200px]"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Write something..."
-                disabled={loading.value}
-              />
+              <div>
+                <EditorProvider>
+                  <Editor
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Write something..."
+                    containerProps={{
+                      style: {
+                        minHeight: "200px",
+                        resize: "vertical",
+                        overflow: "auto",
+                      },
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <Toolbar style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <BtnUndo />
+                      <BtnRedo />
+                      <Separator />
+                      <BtnBold />
+                      <BtnItalic />
+                      <BtnUnderline />
+                      <BtnStrikeThrough />
+                      <Separator />
+                      <BtnNumberedList />
+                      <BtnBulletList />
+                      <Separator />
+                      <BtnLink />
+                      <BtnClearFormatting />
+                      <HtmlButton />
+                      <Separator />
+                      <BtnStyles />
+                    </Toolbar>
+                  </Editor>
+                </EditorProvider>
+              </div>
             </div>
 
             {/* Thumbnail upload via next-cloudinary (unsigned) */}

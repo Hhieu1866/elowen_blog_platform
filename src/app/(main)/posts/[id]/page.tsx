@@ -335,7 +335,10 @@ export default function PostDetailPage() {
 
         {/* right - post content */}
         <div className="prose max-w-none text-justify md:w-2/3">
-          <p style={{ whiteSpace: "pre-line" }}>{post.content}</p>
+          <p
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            style={{ whiteSpace: "pre-line" }}
+          />
         </div>
       </div>
 

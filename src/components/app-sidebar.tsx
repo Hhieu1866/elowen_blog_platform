@@ -82,15 +82,15 @@ const data = {
         },
         {
           title: "Posts",
-          url: "#",
+          url: "/dashboard/posts",
         },
         {
           title: "Categories",
-          url: "#",
+          url: "/dashboard/categories",
         },
         {
           title: "Tags",
-          url: "#",
+          url: "/dashboard/tags",
         },
       ],
     },

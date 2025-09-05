@@ -366,7 +366,10 @@ export default function UserPostsManager() {
                             {post.published ? "Published" : "Draft"}
                           </Badge>
                         </div>
-                        <p className="line-clamp-1 text-base">{post.content}</p>
+                        <p
+                          className="line-clamp-1 text-base"
+                          dangerouslySetInnerHTML={{ __html: post.content }}
+                        />
                         <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
                           <span className="text-sm">
                             {post.category?.name ||
@@ -492,12 +495,9 @@ export default function UserPostsManager() {
           )}
         </>
       ) : (
-        <div>
+        <div className="flex flex-col items-center justify-center py-14">
           <p>No posts yet</p>
           <p>Get started by creating your first post</p>
-          <Button asChild className="mt-6">
-            <Link href="/posts/create">Create your first post</Link>
-          </Button>
         </div>
       )}
 
