@@ -5,13 +5,15 @@ import PostSection from "@/components/PostSection";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import HeroImage from "../../../public/hero_img.png";
+import HeadlineArtLife from "../../../public/HeadlineArt&Life.png";
 
 export default function Home() {
   return (
     <div className="">
       <div className="relative w-full px-6 py-5 md:px-48">
         <Image
-          src="/HeadlineArt&Life.png"
+          src={HeadlineArtLife}
           alt="Headline Art & Life"
           width={1920}
           height={1080}
@@ -79,7 +81,7 @@ export default function Home() {
 
       <div className="relative w-full px-5 md:px-48">
         <Image
-          src="/hero_img.png"
+          src={HeroImage}
           alt="banner"
           width={1920}
           height={1080}

@@ -17,9 +17,9 @@ import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import { AspectRatio } from "./ui/aspect-ratio";
-import Loading from "./Loading";
 import { Skeleton } from "./ui/skeleton";
 import Link from "next/link";
+import Fyrre from "../../public/fyrre.png";
 
 interface Post {
   id: string;
@@ -179,7 +179,8 @@ const PostSection = () => {
                       <Link href={`/posts/${post.id}`}>
                         <h1 className="text-3xl font-bold">{post.title}</h1>
                       </Link>
-                      <p className="line-clamp-3 text-base">{post.content}</p>
+                      
+                      <p dangerouslySetInnerHTML={{ __html: post.content }} className="line-clamp-3 text-base"/>
                     </div>
 
                     {/* info line */}
@@ -222,7 +223,7 @@ const PostSection = () => {
           <h3 className="text-base font-bold uppercase">Printmagazine</h3>
           <p className="text-5xl font-bold tracking-widest">03/2022</p>
           <Image
-            src="/fyrre.png"
+            src={Fyrre}
             alt="Magazine Cover 3/22"
             width={1920}
             height={1080}

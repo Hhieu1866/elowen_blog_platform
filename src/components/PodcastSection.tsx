@@ -8,25 +8,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Ep05 from "../../public/ep05.png";
+import Ep04 from "../../public/ep04.png";
+import Ep03 from "../../public/ep03.png";
 
 // data podcasts
 const podcasts = [
   {
-    img: "/ep05.png",
+    img: Ep05,
     alt: "The Problem of today’s cultural development",
     title: "The Problem of today’s cultural development",
     date: "January 21, 2022",
     duration: "45 Min",
   },
   {
-    img: "/ep04.png",
+    img: Ep04,
     alt: "The hidden messages of Jack Nielson",
     title: "The hidden messages of Jack Nielson",
     date: "January 21, 2022",
     duration: "1h 4Min",
   },
   {
-    img: "/ep03.png",
+    img: Ep03,
     alt: "Behind the scenes of the street art culture",
     title: "Behind the scenes of the street art culture",
     date: "January 21, 2022",
