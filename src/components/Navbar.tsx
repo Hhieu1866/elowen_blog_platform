@@ -1,7 +1,7 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { Instagram, Rss, Twitter, Youtube, Menu } from "lucide-react";
-import React from "react";
 import {
   Sheet,
   SheetContent,
@@ -27,6 +27,10 @@ import { useAuth } from "@/hooks/useAuth";
 const Navbar = () => {
   const router = useRouter();
   const { isAuthenticated, logout, isAdmin } = useAuth();
+
+  // Gate để SSR và client-first-render khớp
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleLogout = async () => {
     try {
@@ -60,9 +64,10 @@ const Navbar = () => {
             <Twitter className="size-5" />
             <Youtube className="size-5" />
 
-            {isAuthenticated.value ? (
+            {mounted && isAuthenticated.value ? (
               <DropdownMenu>
                 <DropdownMenuTrigger>
+                  {/* Nếu bạn wrap bằng Button/Link tuỳ biến, cân nhắc thêm asChild */}
                   <Avatar>
                     <AvatarImage
                       src="https://github.com/shadcn.png"
@@ -115,7 +120,7 @@ const Navbar = () => {
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-4 text-lg">
-                {isAuthenticated.value ? (
+                {mounted && isAuthenticated.value ? (
                   <div className="flex items-center gap-3">
                     <DropdownMenu>
                       <DropdownMenuTrigger>

@@ -1,7 +1,7 @@
 "use client";
 
 import { signal } from "@preact/signals-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export type AuthUser = {
   readonly id: string;
@@ -10,63 +10,73 @@ export type AuthUser = {
   readonly role: "USER" | "ADMIN";
 };
 
-// Signals cho trạng thái xác thực
+// Global signals cho trạng thái xác thực
 export const isAuthenticated = signal<boolean>(false);
 export const user = signal<AuthUser | null>(null);
 export const token = signal<string | null>(null);
 
-// Khôi phục từ localStorage ngay khi load client
-if (typeof window !== "undefined") {
-  const savedToken = localStorage.getItem("token");
-  const savedUser = localStorage.getItem("user");
-  if (savedToken) {
-    token.value = savedToken;
-    isAuthenticated.value = true;
-    if (savedUser) {
+// ❗️Không bootstrap từ localStorage ở top-level để tránh lệch SSR/CSR
+
+export const useAuth = () => {
+  // Bootstrap 1 lần sau khi mounted để tránh mismatch SSR
+  const bootstrapped = useRef(false);
+
+  useEffect(() => {
+    if (!bootstrapped.current) {
+      bootstrapped.current = true;
       try {
-        user.value = JSON.parse(savedUser);
+        const savedToken = localStorage.getItem("token");
+        const savedUser = localStorage.getItem("user");
+        token.value = savedToken;
+        isAuthenticated.value = !!savedToken;
+        user.value = savedUser ? JSON.parse(savedUser) : null;
       } catch {
+        token.value = null;
+        isAuthenticated.value = false;
         user.value = null;
       }
     }
-  }
-}
 
-export const useAuth = () => {
-  // Đồng bộ đa tab (storage event không bắn cho chính tab hiện tại)
-  useEffect(() => {
+    // Đồng bộ đa tab
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "token") {
-        token.value = e.newValue;
-        isAuthenticated.value = !!e.newValue;
-      }
-      if (e.key === "user") {
-        user.value = e.newValue ? JSON.parse(e.newValue) : null;
+      try {
+        if (e.key === "token") {
+          token.value = e.newValue;
+          isAuthenticated.value = !!e.newValue;
+        }
+        if (e.key === "user") {
+          user.value = e.newValue ? JSON.parse(e.newValue) : null;
+        }
+      } catch {
+        // ignore parse errors
       }
     };
     window.addEventListener("storage", handleStorageChange);
-    return () => removeEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const login = (userData: AuthUser, accessToken: string) => {
     user.value = userData;
     token.value = accessToken;
     isAuthenticated.value = true;
-    if (typeof window !== "undefined") {
+    try {
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(userData));
+    } catch {
+      // ignore
     }
-    // [NOTE] Ở trang Login/Register: sau khi gọi login(...),
-    // nên dùng router.replace("/") + router.refresh() để Navbar cập nhật tức thì.
+    // Gợi ý: sau khi login, dùng router.replace("/") + router.refresh()
   };
 
   const logout = () => {
     user.value = null;
     token.value = null;
     isAuthenticated.value = false;
-    if (typeof window !== "undefined") {
+    try {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+    } catch {
+      // ignore
     }
   };
 
