@@ -182,7 +182,7 @@ const PostSection = () => {
 
                       <p
                         dangerouslySetInnerHTML={{ __html: post.content }}
-                        className="line-clamp-3 text-base"
+                        className="line-clamp-3 text-base font-thin [&_*]:!font-thin"
                       />
                     </div>
 

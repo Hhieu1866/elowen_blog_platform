@@ -53,6 +53,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Separator } from "@/components/ui/separator";
 
 interface Post {
   id: string;
@@ -191,18 +192,19 @@ export default function UserPostsManager() {
     <div className="mt-5 space-y-6">
       {/* toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1">
+        <div className="flex-1 max-sm:order-1">
           <Input
             placeholder="Search posts"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-sm:h-10"
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="max-sm:no-scrollbar flex items-center gap-2 max-sm:order-2 max-sm:-mx-3 max-sm:overflow-x-auto max-sm:px-3 max-sm:py-1">
           {/* Status */}
           <Select value={status} onValueChange={(v) => setStatus(v as any)}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-[140px] max-sm:h-9 max-sm:w-[120px]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -217,7 +219,7 @@ export default function UserPostsManager() {
             value={categoryId ?? "#"}
             onValueChange={(v) => setCategoryId(v === "#" ? undefined : v)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] max-sm:h-9 max-sm:w-[140px]">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -242,7 +244,7 @@ export default function UserPostsManager() {
               setSortOrder(order);
             }}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] max-sm:h-9 max-sm:w-[160px]">
               <SelectValue placeholder="Sort" />
             </SelectTrigger>
             <SelectContent>
@@ -264,6 +266,7 @@ export default function UserPostsManager() {
               setSortBy("createdAt");
               setSortOrder("desc");
             }}
+            className="max-sm:h-9"
           >
             Reset
           </Button>
@@ -271,15 +274,13 @@ export default function UserPostsManager() {
       </div>
 
       {/* header */}
-      <div className="flex items-center justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            {posts.length} {posts.length === 1 ? "post" : "posts"} total
-          </p>
-        </div>
+      <div className="flex items-center justify-between gap-4 max-sm:flex-col max-sm:items-stretch sm:flex-row sm:items-center">
+        <p className="text-sm text-muted-foreground max-sm:text-xs">
+          {posts.length} {posts.length === 1 ? "post" : "posts"} total
+        </p>
         <Button
           asChild
-          className="btn-sweep-effect rounded-none border border-black bg-black text-white before:bg-white hover:text-black"
+          className="btn-sweep-effect rounded-none border border-black bg-black text-white before:bg-white hover:text-black max-sm:h-10 max-sm:w-full"
         >
           <Link href="/posts/create">
             <Plus />
@@ -290,19 +291,77 @@ export default function UserPostsManager() {
 
       {/* list */}
       {postsLoading.value ? (
-        <Card className="overflow-hidden">
-          <CardHeader className="p-4">
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="mt-2 h-4 w-1/2" />
-          </CardHeader>
-          <CardContent className="p-4">
-            <Skeleton className="h-20 w-full" />
-          </CardContent>
-          <CardFooter className="flex justify-between p-4">
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-8 w-8 rounded-full" />
-          </CardFooter>
-        </Card>
+        <div className="space-y-5">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i}>
+              <div className="flex flex-col gap-8 py-5 max-sm:grid max-sm:grid-cols-[96px_1fr_auto] max-sm:items-start max-sm:gap-4 max-sm:py-4 md:flex-row">
+                {/* Thumb skeleton */}
+                <div className="w-full max-sm:col-span-1 md:w-auto md:flex-shrink-0">
+                  <div className="w-[150px] max-sm:w-[96px]">
+                    <AspectRatio
+                      ratio={1}
+                      className="overflow-hidden rounded-sm"
+                    >
+                      <Skeleton className="h-full w-full" />
+                    </AspectRatio>
+                  </div>
+                </div>
+
+                {/* Content + right column skeleton */}
+                <div className="flex w-full items-center justify-between max-sm:col-span-1">
+                  {/* LEFT: title + badge + excerpt + category */}
+                  <div className="flex max-w-[400px] flex-col gap-3 max-sm:max-w-full max-sm:gap-2">
+                    {/* Title + Badge */}
+                    <div className="flex items-center gap-3 max-sm:gap-2">
+                      <Skeleton className="h-7 w-64 max-sm:h-5 max-sm:w-40" />
+                      <Skeleton className="h-5 w-20 rounded-full max-sm:h-4 max-sm:w-16" />
+                    </div>
+
+                    {/* Excerpt (1 dòng desktop, 2 dòng mobile) */}
+                    <Skeleton className="h-4 w-96 max-sm:w-full" />
+
+                    {/* Category pill */}
+                    <div className="mt-3 max-sm:mt-1">
+                      <Skeleton className="h-6 w-16 rounded-full max-sm:h-5" />
+                    </div>
+
+                    {/* Meta rút gọn cho mobile */}
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground md:hidden">
+                      <Skeleton className="h-3 w-24" />
+                      <Skeleton className="h-3 w-3 rounded-full" />
+                      <Skeleton className="h-3 w-12" />
+                    </div>
+                  </div>
+
+                  {/* RIGHT (desktop): menu trên, meta dưới */}
+                  <div className="hidden h-full md:flex md:flex-col md:items-end md:justify-between">
+                    {/* Menu (… ) */}
+                    <Skeleton className="h-8 w-8 rounded-full" />
+
+                    {/* Meta 3 dòng */}
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-3 w-12" />
+                        <Skeleton className="h-3 w-28" />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-3 w-12" />
+                        <Skeleton className="h-3 w-20" />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-3 w-12" />
+                        <Skeleton className="h-3 w-10" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px w-full bg-black/60" />
+            </div>
+          ))}
+        </div>
       ) : posts.length > 0 ? (
         <>
           <div>
@@ -312,26 +371,28 @@ export default function UserPostsManager() {
                 : 0;
               const readMin = Math.max(1, Math.ceil(words / 200));
 
+              // Tên author fallback (ưu tiên localStorage nếu có)
               const authorName =
                 typeof window !== "undefined" && localStorage.getItem("user")
                   ? (() => {
                       try {
                         return (
                           JSON.parse(localStorage.getItem("user") || "{}")
-                            .name || "Author"
+                            .name || "Admin User"
                         );
                       } catch {
-                        return "Author";
+                        return "Admin User";
                       }
                     })()
-                  : "Author";
+                  : "Admin User";
 
               return (
                 <div key={post.id}>
-                  <div className="flex flex-col gap-8 py-5 md:flex-row">
-                    <div className="w-full md:w-auto md:flex-shrink-0">
+                  <div className="flex flex-col gap-8 py-5 max-sm:grid max-sm:grid-cols-[96px_1fr_auto] max-sm:items-start max-sm:gap-4 max-sm:py-4 md:flex-row">
+                    {/* Thumbnail */}
+                    <div className="w-full max-sm:col-span-1 md:w-auto md:flex-shrink-0">
                       <Link href={`/posts/${post.id}`}>
-                        <div className="w-[150px]">
+                        <div className="w-[150px] max-sm:w-[96px]">
                           <AspectRatio
                             ratio={1}
                             className="overflow-hidden rounded-sm"
@@ -351,56 +412,62 @@ export default function UserPostsManager() {
                       </Link>
                     </div>
 
-                    <div className="flex w-full items-center justify-between">
-                      <div className="flex max-w-[400px] flex-col items-start justify-center gap-3">
-                        <div className="flex items-center gap-3">
+                    {/* Content + meta + actions */}
+                    <div className="flex w-full items-center justify-between max-sm:col-span-1 max-sm:items-start max-sm:justify-start">
+                      {/* LEFT: Title + badge + excerpt + category */}
+                      <div className="flex max-w-[400px] flex-col items-start justify-center gap-3 max-sm:max-w-full max-sm:gap-2">
+                        {/* Title + Badge */}
+                        <div className="flex items-center gap-3 max-sm:gap-2">
                           <Link href={`/posts/${post.id}`}>
-                            <div className="line-clamp-1 text-2xl font-bold">
+                            <h3 className="line-clamp-1 text-2xl font-bold max-sm:text-base">
                               {post.title}
-                            </div>
+                            </h3>
                           </Link>
-
                           <Badge
                             variant={post.published ? "default" : "secondary"}
+                            className="max-sm:px-2 max-sm:py-0.5 max-sm:text-[10px]"
                           >
                             {post.published ? "Published" : "Draft"}
                           </Badge>
                         </div>
+
+                        {/* Excerpt: 1 dòng desktop, 2 dòng mobile */}
                         <p
-                          className="line-clamp-1 text-base"
+                          className="line-clamp-1 text-base max-sm:line-clamp-2 max-sm:text-sm"
                           dangerouslySetInnerHTML={{ __html: post.content }}
                         />
-                        <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white md:mt-0">
-                          <span className="text-sm">
+
+                        {/* Category pill */}
+                        <span className="btn-sweep-effect mt-3 rounded-full border border-black bg-white px-3 py-1 uppercase text-black before:bg-black hover:text-white max-sm:mt-1 max-sm:px-2 max-sm:py-0.5 max-sm:text-[11px] md:mt-0">
+                          <span className="text-sm max-sm:text-[11px]">
                             {post.category?.name ||
                               (post.published ? "Published" : "Draft")}
                           </span>
                         </span>
+
+                        {/* Meta rút gọn mobile */}
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground md:hidden">
+                          <span>
+                            {new Date(post.createdAt).toLocaleDateString()}
+                          </span>
+                          <span>•</span>
+                          <span>{readMin} min</span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center justify-end">
-                        <div className="flex flex-col md:flex-row md:items-center md:gap-7">
-                          <div className="mb-2 flex items-center gap-3 md:mb-0">
-                            <p className="font-semibold">Text</p>
-                            <span className="underline">{authorName}</span>
-                          </div>
-                          <div className="mb-2 flex items-center gap-3 md:mb-0">
-                            <p className="font-semibold">Date</p>
-                            <span>
-                              {new Date(post.createdAt).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <p className="font-semibold">Read</p>
-                            <span>{readMin} Min</span>
-                          </div>
-
+                      {/* RIGHT (DESKTOP): menu trên cùng, meta dưới cùng */}
+                      <div className="hidden h-full md:flex md:flex-col md:items-end md:justify-between">
+                        {/* Menu ở trên cùng */}
+                        <div>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 disabled={postsLoading.value}
+                                className="h-8 w-8"
+                                aria-label="Open menu"
+                                title="Open menu"
                               >
                                 <MoreHorizontal className="size-5" />
                               </Button>
@@ -429,12 +496,37 @@ export default function UserPostsManager() {
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>
+
+                        {/* Meta list ở dưới cùng, căn phải */}
+                        <div className="flex flex-col items-end gap-2 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground">
+                              Author:
+                            </span>
+                            <Link
+                              href={`/users/${post.authorId}`}
+                              className="underline"
+                            >
+                              {authorName}
+                            </Link>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground">Date:</span>
+                            <span>
+                              {new Date(post.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground">Read:</span>
+                            <span>{readMin} min</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {idx < posts.length - 1 && (
-                    <div className="h-px w-full bg-black" />
+                    <Separator className="bg-black" />
                   )}
                 </div>
               );
@@ -443,61 +535,67 @@ export default function UserPostsManager() {
 
           {/* pagination */}
           {totalPages > 1 && (
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage > 1) setCurrentPage(currentPage - 1);
-                    }}
-                    className={
-                      currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                    }
-                  />
-                </PaginationItem>
+            <div className="max-sm:no-scrollbar max-sm:-mx-3 max-sm:overflow-x-auto max-sm:px-3">
+              <Pagination>
+                <PaginationContent className="max-sm:gap-1">
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) setCurrentPage(currentPage - 1);
+                      }}
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(page);
-                        }}
-                        isActive={currentPage === page}
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ),
-                )}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(page);
+                          }}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ),
+                  )}
 
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage < totalPages)
-                        setCurrentPage(currentPage + 1);
-                    }}
-                    className={
-                      currentPage === totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages)
+                          setCurrentPage(currentPage + 1);
+                      }}
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           )}
         </>
       ) : (
-        <div className="flex flex-col items-center justify-center py-14">
-          <p>No posts yet</p>
-          <p>Get started by creating your first post</p>
+        <div className="flex flex-col items-center justify-center py-14 max-sm:py-10">
+          <p className="max-sm:text-sm">No posts yet</p>
+          <p className="text-muted-foreground max-sm:text-xs">
+            Get started by creating your first post
+          </p>
         </div>
       )}
 

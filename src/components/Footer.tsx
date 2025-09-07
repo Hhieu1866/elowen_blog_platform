@@ -5,7 +5,7 @@ const Footer = () => {
 
   const footerLinks = [
     ["Art", "Sculptures", "Street Art"],
-    ["Magazine", "Podcast", "Authors"],
+    ["Magazine", "Posts", "Authors"],
     ["Styleguide", "Licensing", "Changelog"],
   ];
 
@@ -16,7 +16,7 @@ const Footer = () => {
         {marqueeTexts.map((text, idx) => (
           <span
             key={idx}
-            className="mx-3 text-base md:text-2xl font-bold tracking-wider text-white"
+            className="mx-3 text-base font-bold tracking-wider text-white md:text-2xl"
           >
             {text}
           </span>
@@ -24,12 +24,12 @@ const Footer = () => {
       </div>
 
       {/* Newsletter */}
-      <div className="container mx-auto flex flex-col gap-6 py-16 px-6 md:flex-row md:items-center md:justify-between md:gap-0 md:py-32">
+      <div className="container mx-auto flex flex-col gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between md:gap-0 md:py-32">
         <p className="flex-1 text-4xl font-bold uppercase text-white md:text-8xl">
           Design new to <br className="hidden md:block" /> your inbox
         </p>
 
-        <div className="flex w-full flex-col gap-4 md:flex-row md:w-auto md:justify-end">
+        <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row md:justify-end">
           <input
             type="text"
             placeholder="email"
