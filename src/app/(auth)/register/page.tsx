@@ -22,7 +22,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-export const registerSchema = z
+const registerSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email address"),
