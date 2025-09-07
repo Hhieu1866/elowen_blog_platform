@@ -345,7 +345,13 @@ export default function PostDetailPage() {
       <Separator className="bg-black" />
 
       {/* COMMENT SECTION */}
-      <CommentSection postId={post.id} initialComments={post.comments ?? []} />
+      <CommentSection
+        postId={post.id}
+        initialComments={(post.comments ?? []).map((comment) => ({
+          ...comment,
+          parentId: null,
+        }))}
+      />
 
       <Separator className="bg-black" />
 
