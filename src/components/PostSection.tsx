@@ -94,7 +94,7 @@ const PostSection = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-10 px-6 md:flex-row md:gap-24 md:px-48 md:py-16">
+    <div className="flex flex-col gap-10 px-6 md:flex-row md:items-start md:gap-24 md:px-48 md:py-16">
       {/* LEFT */}
 
       <div className="w-full md:w-3/4">
@@ -179,8 +179,11 @@ const PostSection = () => {
                       <Link href={`/posts/${post.id}`}>
                         <h1 className="text-3xl font-bold">{post.title}</h1>
                       </Link>
-                      
-                      <p dangerouslySetInnerHTML={{ __html: post.content }} className="line-clamp-3 text-base"/>
+
+                      <p
+                        dangerouslySetInnerHTML={{ __html: post.content }}
+                        className="line-clamp-3 text-base"
+                      />
                     </div>
 
                     {/* info line */}
@@ -218,7 +221,7 @@ const PostSection = () => {
       </div>
 
       {/* RIGHT */}
-      <div className="w-full md:w-1/4">
+      <div className="sticky top-10 z-20 w-full self-start md:w-1/4">
         <div className="flex flex-col gap-4">
           <h3 className="text-base font-bold uppercase">Printmagazine</h3>
           <p className="text-5xl font-bold tracking-widest">03/2022</p>
