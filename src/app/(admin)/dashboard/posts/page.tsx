@@ -74,7 +74,7 @@ const POSTS_PER_PAGE = 10;
 export default function UserPostsManager() {
   const { user: currentUser, isAdmin } = useAuth();
 
-  // Check admin status once
+  // Check admin
   const userIsAdmin = currentUser.value && isAdmin();
 
   // State management
@@ -84,7 +84,7 @@ export default function UserPostsManager() {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter and pagination state
+  // Filter va pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -137,13 +137,13 @@ export default function UserPostsManager() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm.trim());
-      setCurrentPage(1); // Reset to first page on new search
+      setCurrentPage(1);
     }, 400);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // Reset page when filters change
+  // Rf when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, statusFilter, categoryFilter, sortBy, sortOrder]);
@@ -208,7 +208,6 @@ export default function UserPostsManager() {
     try {
       await api.delete(`/posts/${postToDelete.id}`);
 
-      // Optimistic update
       setPosts((prev) => prev.filter((p) => p.id !== postToDelete.id));
       toast.success("Post deleted successfully");
     } catch (err: any) {
@@ -289,7 +288,7 @@ export default function UserPostsManager() {
         </p>
       </div>
 
-      {/* Search & Filters Toolbar */}
+      {/* Search va filters toolbar */}
       <div className="flex flex-col gap-3 py-10 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
           <Input
@@ -300,7 +299,7 @@ export default function UserPostsManager() {
           />
         </div>
         <div className="flex items-center gap-2">
-          {/* Status Filter */}
+          {/* Status filter */}
           <Select
             value={statusFilter}
             onValueChange={(v) => setStatusFilter(v as any)}
@@ -315,7 +314,7 @@ export default function UserPostsManager() {
             </SelectContent>
           </Select>
 
-          {/* Category Filter */}
+          {/* Category filter */}
           <Select
             value={categoryFilter}
             onValueChange={(v) => setCategoryFilter(v)}
@@ -333,7 +332,7 @@ export default function UserPostsManager() {
             </SelectContent>
           </Select>
 
-          {/* Sort Options */}
+          {/* Sort options */}
           <Select
             value={`${sortBy}:${sortOrder}`}
             onValueChange={(v) => {
@@ -366,7 +365,7 @@ export default function UserPostsManager() {
         </div>
       </div>
 
-      {/* Results Header */}
+      {/* Results header */}
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-sm text-muted-foreground">
@@ -390,7 +389,7 @@ export default function UserPostsManager() {
         </Button>
       </div>
 
-      {/* Posts Table */}
+      {/* Posts table */}
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -516,7 +515,7 @@ export default function UserPostsManager() {
         </Pagination>
       )}
 
-      {/* Empty State */}
+      {/* Empty state */}
       {posts.length === 0 && !isLoading && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center pt-6">
@@ -534,7 +533,7 @@ export default function UserPostsManager() {
         </Card>
       )}
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete confirmation dialog */}
       <AlertDialog
         open={!!postToDelete}
         onOpenChange={(open) => {

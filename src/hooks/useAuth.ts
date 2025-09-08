@@ -10,7 +10,6 @@ export type AuthUser = {
   readonly role: "USER" | "ADMIN";
 };
 
-// Global signals cho trạng thái xác thực
 export const isAuthenticated = signal<boolean>(false);
 export const user = signal<AuthUser | null>(null);
 export const token = signal<string | null>(null);
@@ -43,9 +42,7 @@ export const useAuth = () => {
         if (e.key === "user") {
           user.value = e.newValue ? JSON.parse(e.newValue) : null;
         }
-      } catch {
-        // ignore parse errors
-      }
+      } catch {}
     };
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
@@ -58,9 +55,7 @@ export const useAuth = () => {
     try {
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(userData));
-    } catch {
-      // ignore
-    }
+    } catch {}
   };
 
   const logout = () => {
@@ -70,9 +65,7 @@ export const useAuth = () => {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-    } catch {
-      // ignore
-    }
+    } catch {}
   };
 
   const isAdmin = () => user.value?.role === "ADMIN";

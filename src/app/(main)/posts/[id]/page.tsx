@@ -177,7 +177,6 @@ export default function PostDetailPage() {
     );
   }
 
-  // ---- error / not found ----
   if (!post || isError.value) {
     return (
       <div className="px-6 py-12 md:px-48">
@@ -200,7 +199,6 @@ export default function PostDetailPage() {
     );
   }
 
-  // ---- render ----
   return (
     <div className="px-6 md:px-48">
       {/* header bar */}

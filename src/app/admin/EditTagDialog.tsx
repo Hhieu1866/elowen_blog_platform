@@ -12,8 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/api";
-import { error } from "console";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 interface Tag {

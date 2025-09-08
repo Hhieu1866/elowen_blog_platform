@@ -5,7 +5,7 @@ const Footer = () => {
 
   const footerLinks = [
     ["Art", "Sculptures", "Street Art"],
-    ["Magazine", "Posts", "Authors"],
+    ["Posts", "Magazine", "Authors"],
     ["Styleguide", "Licensing", "Changelog"],
   ];
 

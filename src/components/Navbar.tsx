@@ -54,8 +54,8 @@ const Navbar = () => {
 
         {/* Desktop menu */}
         <ul className="hidden items-center gap-5 text-[20px] md:flex">
-          <li>Magazine</li>
           <Link href="/profile">Posts</Link>
+          <li>Magazine</li>
           <li>Authors</li>
           <span>—</span>
           <div className="flex items-center gap-4">
@@ -165,8 +165,8 @@ const Navbar = () => {
                   </div>
                 )}
 
-                <a href="#">Magazine</a>
                 <a href="/profile">Posts</a>
+                <a href="#">Magazine</a>
                 <a href="#">Authors</a>
 
                 <div className="flex gap-4 pt-4">

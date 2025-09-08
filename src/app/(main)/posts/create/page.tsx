@@ -55,21 +55,17 @@ type Tag = { id: string; name: string };
 export default function CreatePostPage() {
   const router = useRouter();
 
-  // form
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
-  // category & tags
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
-  // publish toggle
   const [published, setPublished] = useState<boolean>(true);
 
-  // signals
   const loading = useSignal(false);
   const errorMsg = useSignal<string | null>(null);
   const catsLoading = useSignal(false);

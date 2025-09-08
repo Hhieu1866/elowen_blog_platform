@@ -57,11 +57,9 @@ const CommentSection = ({
 }: CommentSectionProps) => {
   const { user: currentUser } = useAuth();
 
-  // Main data states - easy to understand what each one does
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
 
-  // Loading states - specific for each action
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [isDeletingComment, setIsDeletingComment] = useState<string | null>(
@@ -72,17 +70,16 @@ const CommentSection = ({
   const [error, setError] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Reply states - grouped logically but separate for clarity
+  // Reply states
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [isReplyingId, setIsReplyingId] = useState<string | null>(null);
 
-  // Edit states - same pattern as reply
+  // Edit comment states
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [isSavingId, setIsSavingId] = useState<string | null>(null);
 
-  // Load comments from API
   const loadComments = useCallback(async () => {
     if (!postId) return;
 
@@ -235,14 +232,14 @@ const CommentSection = ({
     }
   };
 
-  // Get root comments (not replies)
+  // Get root comments
   const rootComments = comments.filter((comment) => !comment.parentId);
 
   // Get replies for a specific comment
   const getReplies = (parentId: string) =>
     comments.filter((comment) => comment.parentId === parentId);
 
-  // Comments to display (with show more/less)
+  // display cmt
   const displayComments = showAll ? rootComments : rootComments.slice(0, 5);
   const hasMoreComments = rootComments.length > 5;
 

@@ -1,5 +1,4 @@
 import AuthorsSection from "@/components/AuthorsSection";
-import Footer from "@/components/Footer";
 import PodcastSection from "@/components/PodcastSection";
 import PostSection from "@/components/PostSection";
 import { Button } from "@/components/ui/button";

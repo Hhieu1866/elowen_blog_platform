@@ -67,7 +67,7 @@ const ProfilePage = () => {
               </TabsList>
             </div>
           ) : (
-            /* Desktop: vertical tabs on left */
+            /* Desktop - vertical tabs on left */
             <aside className="w-40 self-start md:sticky md:top-6">
               <TabsList className="flex-col rounded-none border-l bg-transparent p-0">
                 <TabsTrigger
@@ -98,7 +98,7 @@ const ProfilePage = () => {
             </aside>
           )}
 
-          {/* tab content */}
+          {/* Tab content */}
           <div
             className={`w-full flex-1 rounded-md border p-6 text-start ${isMobile ? "mt-4" : ""}`}
           >

@@ -48,7 +48,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RefreshCw, Search, Eye, PencilLine, Trash2 } from "lucide-react";
 
-/** ---- Types ---- */
 type Role = "ADMIN" | "USER";
 type HasPosts = "all" | "yes" | "no";
 type SortBy = "createdAt" | "name" | "email" | "postsCount";
@@ -69,7 +68,7 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString();
 export default function AdminUsersManager() {
   const { user: currentUser, isAdmin } = useAuth();
 
-  // Check admin status once - avoid function calls in effects
+  // Check admin status
   const userIsAdmin = currentUser.value && isAdmin();
 
   // data
@@ -98,7 +97,6 @@ export default function AdminUsersManager() {
   const [userToDelete, setUserToDelete] = useState<UserRow | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Keyboard shortcut: '/' to focus search
   const searchRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
@@ -111,7 +109,7 @@ export default function AdminUsersManager() {
     return () => window.removeEventListener("keydown", handleKeydown);
   }, []);
 
-  // Admin access control - separate effect
+  // Admin access control
   useEffect(() => {
     if (currentUser.value && !userIsAdmin) {
       setError("Access denied. Admin privileges required.");
@@ -123,7 +121,7 @@ export default function AdminUsersManager() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm.trim());
-      setCurrentPage(1); // Reset to first page on search
+      setCurrentPage(1);
     }, 400);
     return () => clearTimeout(timer);
   }, [searchTerm]);
@@ -133,9 +131,7 @@ export default function AdminUsersManager() {
     setCurrentPage(1);
   }, [roleFilter, hasPosts, createdFrom, createdTo, sortBy, sortOrder]);
 
-  // Main fetch function
   const fetchUsers = async () => {
-    // Early return if not admin
     if (!userIsAdmin) return;
 
     setError(null);
@@ -149,7 +145,7 @@ export default function AdminUsersManager() {
         sortOrder,
       });
 
-      // Add optional filters
+      // optional filters
       if (debouncedSearch) params.set("search", debouncedSearch);
       if (roleFilter !== "all") params.set("role", roleFilter);
       if (hasPosts !== "all")
@@ -280,7 +276,7 @@ export default function AdminUsersManager() {
             Create, edit, and organize blog posts in your admin dashboard.
           </p>
         </div>
-        {/* Keep the toolbar visible so users can adjust filters */}
+
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-1 items-center gap-2">
             <div className="relative w-full">
@@ -404,7 +400,7 @@ export default function AdminUsersManager() {
   // Main render
   return (
     <div className="space-y-6">
-      {/* Search & Filters Toolbar */}
+      {/* Search va Filters Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-2">
           <div className="relative w-full">

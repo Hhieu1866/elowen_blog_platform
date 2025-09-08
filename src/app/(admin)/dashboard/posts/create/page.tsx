@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 "use client";
@@ -182,7 +181,6 @@ export default function CreatePostAdminPage() {
               />
             </div>
 
-            {/* Thumbnail upload via next-cloudinary (unsigned) */}
             <div className="space-y-2">
               <Label>Thumbnail</Label>
               <div className="flex items-center gap-4">
@@ -232,7 +230,7 @@ export default function CreatePostAdminPage() {
               </p>
             </div>
 
-            {/* Category (single select) */}
+            {/* Category select*/}
             <div className="space-y-2">
               <Label>Category</Label>
               <Select
@@ -258,7 +256,7 @@ export default function CreatePostAdminPage() {
               </Select>
             </div>
 
-            {/* Tags (multi-select via checkbox list) */}
+            {/* Tags multi-select*/}
             <div className="space-y-3">
               <Label>Tags</Label>
               <div className="max-h-44 overflow-auto rounded-md">

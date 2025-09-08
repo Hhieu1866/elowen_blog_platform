@@ -5,12 +5,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -190,7 +185,7 @@ export default function UserPostsManager() {
 
   return (
     <div className="mt-5 space-y-6">
-      {/* toolbar */}
+      {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1 max-sm:order-1">
           <Input
@@ -524,9 +519,7 @@ export default function UserPostsManager() {
                     </div>
                   </div>
 
-                  {idx < posts.length - 1 && (
-                    <Separator className="bg-black" />
-                  )}
+                  {idx < posts.length - 1 && <Separator className="bg-black" />}
                 </div>
               );
             })}

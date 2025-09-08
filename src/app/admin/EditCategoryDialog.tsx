@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/api";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 interface Category {
@@ -55,7 +55,7 @@ const EditCategoryDialog = ({
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
