@@ -5,7 +5,6 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import api from "@/lib/api";
@@ -39,6 +38,7 @@ type Post = {
     content: string;
     createdAt: string;
     author: { id: string; name: string | null };
+    parentId: string | null;
   }[];
 };
 
@@ -116,9 +116,8 @@ export default function PostDetailPage() {
     let alive = true;
     (async () => {
       try {
-        // lấy 3 bài mới nhất, published=true
         const res = await api.get(
-          `/posts?limit=3&sortBy=createdAt&sortOrder=desc&published=true`,
+          `/posts?limit=4&sortBy=createdAt&sortOrder=desc&published=true`,
         );
         if (!alive) return;
         const arr: SimplePost[] = (res.data?.data ?? [])
@@ -132,7 +131,6 @@ export default function PostDetailPage() {
     };
   }, [id]);
 
-  // ---- loading skeleton ----
   if (isLoading.value) {
     return (
       <div className="px-6 py-8 md:px-48">
@@ -283,7 +281,7 @@ export default function PostDetailPage() {
                   className="object-cover"
                 />
               </div>
-              <p className="min-w-0 text-3xl font-bold">
+              <p className="min-w-0 text-2xl font-bold">
                 {post.author?.name ?? "Author"}
               </p>
             </div>
@@ -345,13 +343,7 @@ export default function PostDetailPage() {
       <Separator className="bg-black" />
 
       {/* COMMENT SECTION */}
-      <CommentSection
-        postId={post.id}
-        initialComments={(post.comments ?? []).map((comment) => ({
-          ...comment,
-          parentId: null,
-        }))}
-      />
+      <CommentSection postId={post.id} initialComments={post.comments ?? []} />
 
       <Separator className="bg-black" />
 
@@ -368,7 +360,7 @@ export default function PostDetailPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3">
         {latest.length === 0
           ? // fallback skeleton cho latest
             Array.from({ length: 3 }).map((_, i) => (

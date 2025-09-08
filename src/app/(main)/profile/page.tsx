@@ -37,7 +37,6 @@ const ProfilePage = () => {
           orientation="vertical"
           className={`w-full ${isMobile ? "flex-col" : "flex-row items-start"}`}
         >
-          {/* Mobile: horizontal tabs at top */}
           {isMobile ? (
             <div className="w-full">
               <TabsList className="grid h-auto w-full grid-cols-4 rounded-none border-b bg-transparent p-0">

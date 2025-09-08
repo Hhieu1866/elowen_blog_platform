@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 "use client";
@@ -25,7 +24,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import api from "@/lib/api";
 import { CldUploadWidget } from "next-cloudinary";
@@ -138,7 +136,6 @@ export default function CreatePostPage() {
         content,
         published,
         ...(thumbnailUrl ? { thumbnailUrl } : {}),
-        // nếu chọn "No category" (sentinel) -> để undefined và map thành null khi gửi
         categoryId: categoryId ?? null,
         ...(selectedTagIds.length ? { tagIds: selectedTagIds } : {}),
       };
@@ -188,7 +185,6 @@ export default function CreatePostPage() {
               />
             </div>
 
-            {/* Content (textarea) */}
             <div className="space-y-2">
               <Label htmlFor="content">Content</Label>
               <div>
@@ -206,7 +202,13 @@ export default function CreatePostPage() {
                     }}
                     className="flex items-center justify-between"
                   >
-                    <Toolbar style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Toolbar
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <BtnUndo />
                       <BtnRedo />
                       <Separator />
@@ -229,7 +231,6 @@ export default function CreatePostPage() {
               </div>
             </div>
 
-            {/* Thumbnail upload via next-cloudinary (unsigned) */}
             <div className="space-y-2">
               <Label>Thumbnail</Label>
               <div className="flex items-center gap-4">
@@ -281,7 +282,6 @@ export default function CreatePostPage() {
               </p>
             </div>
 
-            {/* Category (single select) */}
             <div className="space-y-2">
               <Label>Category</Label>
               <Select
@@ -307,7 +307,6 @@ export default function CreatePostPage() {
               </Select>
             </div>
 
-            {/* Tags (multi-select via checkbox list) */}
             <div className="space-y-3">
               <Label>Tags</Label>
               <div className="max-h-44 overflow-auto rounded-md">
@@ -356,7 +355,6 @@ export default function CreatePostPage() {
               </p>
             </div>
 
-            {/* Publish toggle */}
             <div className="flex items-center gap-2">
               <Checkbox
                 id="published"

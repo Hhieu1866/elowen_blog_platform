@@ -39,7 +39,6 @@ interface CommentSectionProps {
   initialComments: Comment[];
 }
 
-// Simple time formatter - easier to understand than complex date logic
 const formatTime = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();

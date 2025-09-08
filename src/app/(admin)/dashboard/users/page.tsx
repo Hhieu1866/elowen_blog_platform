@@ -174,7 +174,6 @@ export default function AdminUsersManager() {
     }
   };
 
-  // 🔥 FIXED: Fetch effect - removed isAdmin function from dependencies
   useEffect(() => {
     if (userIsAdmin) {
       fetchUsers();
@@ -189,7 +188,7 @@ export default function AdminUsersManager() {
     createdTo,
     sortBy,
     sortOrder,
-    userIsAdmin, // ✅ Use boolean instead of function
+    userIsAdmin,
   ]);
 
   const resetFilters = () => {
@@ -222,8 +221,6 @@ export default function AdminUsersManager() {
       setUserToDelete(null);
     }
   };
-
-  // ---- Render States ----
 
   // Initial loading state
   if (isLoading && users.length === 0 && !error) {
@@ -274,7 +271,6 @@ export default function AdminUsersManager() {
     );
   }
 
-  // Empty state - FIXED: Show toolbar even when no results
   if (users.length === 0 && !isLoading) {
     return (
       <div className="space-y-6">

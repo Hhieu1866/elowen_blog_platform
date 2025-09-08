@@ -15,10 +15,7 @@ export const isAuthenticated = signal<boolean>(false);
 export const user = signal<AuthUser | null>(null);
 export const token = signal<string | null>(null);
 
-// ❗️Không bootstrap từ localStorage ở top-level để tránh lệch SSR/CSR
-
 export const useAuth = () => {
-  // Bootstrap 1 lần sau khi mounted để tránh mismatch SSR
   const bootstrapped = useRef(false);
 
   useEffect(() => {
@@ -37,7 +34,6 @@ export const useAuth = () => {
       }
     }
 
-    // Đồng bộ đa tab
     const handleStorageChange = (e: StorageEvent) => {
       try {
         if (e.key === "token") {
@@ -65,7 +61,6 @@ export const useAuth = () => {
     } catch {
       // ignore
     }
-    // Gợi ý: sau khi login, dùng router.replace("/") + router.refresh()
   };
 
   const logout = () => {

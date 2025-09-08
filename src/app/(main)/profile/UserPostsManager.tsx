@@ -371,7 +371,6 @@ export default function UserPostsManager() {
                 : 0;
               const readMin = Math.max(1, Math.ceil(words / 200));
 
-              // Tên author fallback (ưu tiên localStorage nếu có)
               const authorName =
                 typeof window !== "undefined" && localStorage.getItem("user")
                   ? (() => {

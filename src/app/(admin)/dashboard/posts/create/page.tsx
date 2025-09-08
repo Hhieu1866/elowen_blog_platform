@@ -41,7 +41,7 @@ export default function CreatePostAdminPage() {
 
   // form
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // tạm dùng textarea
+  const [content, setContent] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   // category & tags
@@ -120,7 +120,6 @@ export default function CreatePostAdminPage() {
         content,
         published,
         ...(thumbnailUrl ? { thumbnailUrl } : {}),
-        // nếu chọn "No category" (sentinel) -> để undefined và map thành null khi gửi
         categoryId: categoryId ?? null,
         ...(selectedTagIds.length ? { tagIds: selectedTagIds } : {}),
       };

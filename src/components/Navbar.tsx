@@ -28,7 +28,6 @@ const Navbar = () => {
   const router = useRouter();
   const { isAuthenticated, logout, isAdmin } = useAuth();
 
-  // Gate để SSR và client-first-render khớp
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 

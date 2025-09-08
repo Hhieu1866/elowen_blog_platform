@@ -23,7 +23,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response interceptor để xử lý lỗi 401/403 (Unauthorized/Forbidden)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -31,7 +30,7 @@ api.interceptors.response.use(
       // Token hết hạn hoặc không hợp lệ
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "/login"; // full reload -> UI reset chắc chắn
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   },
