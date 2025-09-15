@@ -1,16 +1,13 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Ep05 from "../../public/ep05.png";
 import Ep04 from "../../public/ep04.png";
 import Ep03 from "../../public/ep03.png";
+import { motion } from "framer-motion";
 
 // data podcasts
 const podcasts = [
@@ -42,9 +39,14 @@ const PodcastSection = () => {
     <div className="px-6 md:px-48">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="py-10 text-4xl font-bold uppercase md:text-6xl lg:text-8xl">
+        <motion.h1
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          className="py-10 text-4xl font-bold uppercase md:text-6xl lg:text-8xl"
+        >
           Podcasts
-        </h1>
+        </motion.h1>
         <Button variant="link" className="flex h-auto items-center gap-2 p-0">
           <span className="hidden text-base font-bold uppercase md:block">
             All Episodes

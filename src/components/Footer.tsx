@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const marqueeTexts = Array(12).fill("NEWSLETTER+++");
@@ -25,9 +28,14 @@ const Footer = () => {
 
       {/* Newsletter */}
       <div className="container mx-auto flex flex-col gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between md:gap-0 md:py-32">
-        <p className="flex-1 text-4xl font-bold uppercase text-white md:text-8xl">
+        <motion.p
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          className="flex-1 text-4xl font-bold uppercase text-white md:text-8xl"
+        >
           Design new to <br className="hidden md:block" /> your inbox
-        </p>
+        </motion.p>
 
         <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row md:justify-end">
           <input

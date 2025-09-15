@@ -1,3 +1,5 @@
+"use client";
+
 import AuthorsSection from "@/components/AuthorsSection";
 import PodcastSection from "@/components/PodcastSection";
 import PostSection from "@/components/PostSection";
@@ -6,11 +8,17 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import HeroImage from "../../../public/hero_img.png";
 import HeadlineArtLife from "../../../public/HeadlineArt&Life.png";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
     <div className="">
-      <div className="relative w-full px-6 py-5 md:px-48">
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+        className="relative w-full px-6 py-5 md:px-48"
+      >
         <Image
           src={HeadlineArtLife}
           alt="Headline Art & Life"
@@ -18,7 +26,7 @@ export default function Home() {
           height={1080}
           className="h-auto w-full object-cover"
         />
-      </div>
+      </motion.div>
 
       <div className="px-6 md:px-48">
         <div className="flex items-center overflow-hidden bg-black">
